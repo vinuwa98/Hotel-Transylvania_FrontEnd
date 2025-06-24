@@ -16,7 +16,7 @@ function AppRoutes() {
         <Route path="/" element={<LoginPage />} />
 
         {/* ✅ Dashboard Route (shows after successful login) */}
-        {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
+        <Route path="/dashboard" element={<DashboardPage />} /> 
       </Routes>
     </Router>
   );
