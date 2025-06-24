@@ -1,13 +1,22 @@
 import React from 'react';
 import AuthSection from '../Components/organisms/AuthSection';
+import loginImage from '../assets/login.png'; // 🔸 import your image
 
 /**
  * LoginPage is the full screen page that shows the AuthSection (Login UI).
  */
 function LoginPage() {
   return (
-    <div>
-      <AuthSection />
+    <div className="flex min-h-screen bg-gray-100">
+      {/* 🔸 Left side image */}
+      
+
+      {/* 🔸 Right side login form */}
+      <div className="w-full md:w-1/1 flex items-center justify-center md:flex">
+        <img src={loginImage} alt="Login Visual" className="size-70" />
+      
+        <AuthSection />
+      </div>
     </div>
   );
 }
