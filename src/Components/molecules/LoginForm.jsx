@@ -72,11 +72,6 @@ function LoginForm() {
         required
       />
 
-      /*
-      Renders your custom button.
-        label="Login" ➜ text shown on the button
-        type="submit" ➜ triggers the form’s onSubmit function
-        */
       <Button label="Login" type="submit" />
     </form>
   );
