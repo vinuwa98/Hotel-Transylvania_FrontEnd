@@ -10,11 +10,7 @@ function App() {
   return (
     <div className="App">
       <AppRoutes />
-
-    <div>Hello from App!</div>
-        <div className="text-4xl text-blue-500 text-center mt-10">
-                Tailwind is Working! 🎉
-        </div>
+        
     </div>
   );
 }
@@ -22,6 +18,7 @@ function App() {
 export default App;
 
 /*
+
 | Code                 | What it does                                         |
 | -------------------- | ---------------------------------------------------- |
 | `import AppRoutes`   | Brings in your routing logic from `AppRoutes.jsx`    |
@@ -29,7 +26,4 @@ export default App;
 | `export default App` | Makes the app usable in `main.jsx`                   |
 
 when the app loads, it will go through
-
-App.jsx → AppRoutes.jsx → LoginPage.jsx → AuthSection → LoginForm → Input & Button
-
 */
