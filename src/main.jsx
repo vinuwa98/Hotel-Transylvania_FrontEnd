@@ -1,10 +1,20 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React, { StrictMode } from 'react'; // ✅ Add StrictMode here
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
 
-createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-  </StrictMode>,
-)
+  </StrictMode>
+);
+
+
+
+/*
+| Code                       | What it does                                                          |
+| -------------------------- | --------------------------------------------------------------------- |
+| `ReactDOM.createRoot(...)` | Tells React where to put your app (inside the HTML `<div id="root">`) |
+| `<App />`                  | Loads your full app (which loads routing, pages, components)          |
+| `import './index.css'`     | Loads global styles (includes Tailwind CSS setup)                     |
+*/
