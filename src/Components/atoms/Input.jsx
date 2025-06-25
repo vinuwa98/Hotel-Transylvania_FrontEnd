@@ -1,5 +1,4 @@
 //This line loads React, which is required to create React components.
-
 import React from 'react';
 
 /**
