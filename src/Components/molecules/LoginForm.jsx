@@ -1,78 +1,71 @@
 import React, { useState } from 'react';
-/*
-🔹 import React, { useState } from 'react';
-React: Used to create the component.
-useState: A special React function (called a hook) used to create and manage state (memory) inside the component.
-*/
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
-import authService from '../../services/authService'; // API call file
-/*
-🔹 import authService from '../../services/authService';
-This will handle the API call to the backend to do the actual login.
-*/
+import authService from '../../services/authService'; // fake login service for now
+import { useNavigate } from 'react-router-dom';
 
-/*
-🔹 function LoginForm() {
-This is the start of the LoginForm component. Everything inside this function makes the login form work.
-*/
 function LoginForm() {
-  // State for input fields
+  // ✅ Input field states
   const [email, setEmail] = useState('');
-  /*
-  🔹 State: const [email, setEmail] = useState('');
-    email stores the current email value typed by the user.
-    setEmail() is the function to update it.
-    useState('') means the initial value is empty.
-    The same happens for below password part
-  */
   const [password, setPassword] = useState('');
 
-  /*
-  🔹 handleLogin Function
-    This function runs when the user clicks the Login button.
-    e.preventDefault() stops the form from reloading the page.
-    authService.login(...) will call the backend with the email and password.
-  */
+  // ✅ Extra states for UI
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // For page redirection
+
+  // ✅ Handle login logic
   const handleLogin = async (e) => {
-    e.preventDefault(); // stops page from refreshing
+    e.preventDefault(); // Prevent form refresh
+    setLoading(true);   // Show loading state
+    setError('');       // Clear previous errors
 
+    try {
+      const user = await authService.login({ email, password });
 
-    await authService.login({ email, password });
-  }; // call the API with user input
+      // ✅ Optionally store token or user info
+      localStorage.setItem('token', user.token);
+      localStorage.setItem('name', user.name);
+
+      // ✅ Redirect to dashboard
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    /*
-    🔹 JSX: What the Form Renders
-    <form> tag starts the login form.
-    onSubmit={handleLogin}: when user presses "Login", run the handleLogin() function.
-    className="space-y-4": Tailwind class — adds vertical space between form elements.
-    */
     <form onSubmit={handleLogin} className="space-y-4">
+      {/* Email Field */}
       <Input
-        /*
-        🔹 Input Component
-        type="email": Makes the input expect an email address.
-        placeholder="Email": Shows “Email” inside the box before typing.
-        value={email}: This links the box to the state (controlled component).
-        onChange={(e) => setEmail(e.target.value)}: When the user types, update the email state.
-        required: Makes this field required before submitting the form.
-        */
         type="email"
         placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       />
+
+      {/* Password Field */}
       <Input
-        type="password" //type="password" hides the characters.
+        type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
 
-      <Button label="Login" type="submit" />
+      {/* Error Message */}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
+      {/* Button */}
+      <Button
+        label={loading ? 'Logging in...' : 'Login'}
+        type="submit"
+        disabled={loading}
+      />
     </form>
   );
 }
