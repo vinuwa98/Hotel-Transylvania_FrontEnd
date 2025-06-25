@@ -26,9 +26,6 @@ function LoginPage() {
         <div className="w-full md:w-1/2 px-6 py-8">
           <AuthSection />
         </div>
-
-        {/* Optional: Additional text below AuthSection */}
-        {/* You can move this inside the right side div if you want it under the form */}
         
       </div>
     </div>
