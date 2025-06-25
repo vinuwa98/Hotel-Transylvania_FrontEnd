@@ -1,4 +1,5 @@
 import React from 'react';
+import { themeColors } from '../../Theme/colors';
 
 /**
  * Reusable Button component using regular function.
@@ -12,12 +13,17 @@ function Button(props) {
 
   return (
     <button
-      type={type}
-      onClick={onClick}
-      className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-    >
-      {label}
-    </button>
+        type={type}
+        onClick={onClick}
+        style={{
+                backgroundColor: themeColors.Blue3rd,
+                color: themeColors.White,
+              }}
+        className="w-full px-4 py-2 rounded-md hover:opacity-90 transition"
+        >
+        {label}
+  </button>
+
   );
 }
 
