@@ -9,7 +9,7 @@ const DashboardPage = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <Header title="Admin Dashboard" />
+        <Header/>
         <main className="p-6">
           <DashboardCards />
         </main>
