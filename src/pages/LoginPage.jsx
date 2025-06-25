@@ -12,7 +12,7 @@ function LoginPage() {
       className="flex justify-center items-center min-h-screen px-4"
       style={{ backgroundColor: themeColors.White }}
     >
-      <div className="flex flex-col md:flex-row items-center justify-center bg-blue-200 shadow-lg rounded-lg overflow-hidden max-w-5xl w-full h-[80vh]">
+      <div className="flex flex-col md:flex-row items-center justify-center bg-blue-300 shadow-lg rounded-lg overflow-hidden max-w-5xl w-full h-[80vh]">
         {/* 🔸 Left side image */}
         <div className="hidden md:flex w-1/2 h-full">
           <img
@@ -26,6 +26,10 @@ function LoginPage() {
         <div className="w-full md:w-1/2 px-6 py-8">
           <AuthSection />
         </div>
+
+        {/* Optional: Additional text below AuthSection */}
+        {/* You can move this inside the right side div if you want it under the form */}
+        
       </div>
     </div>
   );
