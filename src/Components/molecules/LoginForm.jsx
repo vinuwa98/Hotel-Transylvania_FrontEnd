@@ -66,6 +66,14 @@ function LoginForm() {
         type="submit"
         disabled={loading}
       />
+
+      <div className="text-center mt-4 text-sm text-gray-600">
+        <p className="mt-2">
+          <a href="/forgot-password" className="text-blue-700 hover:underline">
+            Forgot your password?
+          </a>
+        </p>
+      </div>
     </form>
   );
 }
