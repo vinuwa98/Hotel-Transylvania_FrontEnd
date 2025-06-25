@@ -1,6 +1,6 @@
 import React from 'react';
 import AuthSection from '../Components/organisms/AuthSection';
-import loginImage from '../assets/login.png';
+import loginImage from '../assets/login1.png';
 import { themeColors } from '../Theme/colors';
 
 /**
