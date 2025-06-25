@@ -16,7 +16,7 @@ function Button(props) {
         type={type}
         onClick={onClick}
         style={{
-                backgroundColor: themeColors.Blue3rd,
+                backgroundColor: themeColors.LightBlue,
                 color: themeColors.White,
               }}
         className="w-full px-4 py-2 rounded-md hover:opacity-90 transition"
