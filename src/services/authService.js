@@ -5,7 +5,7 @@ const API_BASE_URL = "https://localhost:7172/api";
 const login = async ({ email, password }) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/Account/login`, {
-      userName: email,
+      userName: email, //should remove userName: part after get backend working
       password,
     });
  
