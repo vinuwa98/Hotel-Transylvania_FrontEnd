@@ -1,24 +1,23 @@
-// src/services/authService.js
-
-// Fake async login simulation
+import axios from "axios";
+ 
+const API_BASE_URL = "https://localhost:7172/api";
+ 
 const login = async ({ email, password }) => {
-  // You can replace this with real backend logic later
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (email === 'admin@gmail.com' && password === '123456') {
-        resolve({
-          token: 'fake-jwt-token',
-          name: 'Admin User'
-        });
-      } else {
-        reject(new Error('Invalid credentials'));
-      }
-    }, 1000);
-  });
+  try {
+    const response = await axios.post(`${API_BASE_URL}/Account/login`, {
+      userName: email,
+      password,
+    });
+ 
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Login failed");
+  }
 };
-
+ 
 const authService = {
   login,
 };
-
+ 
 export default authService;
+ 
