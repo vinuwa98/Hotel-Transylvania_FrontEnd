@@ -1,7 +1,7 @@
-import React from 'react';
-import AuthSection from '../Components/organisms/AuthSection';
-import loginImage from '../assets/login1.png';
-import { themeColors } from '../Theme/colors';
+import React from "react";
+import AuthSection from "../Components/organisms/AuthSection";
+import loginImage from "../assets/login1.png";
+import { themeColors } from "../Theme/colors";
 
 /**
  * LoginPage is the full screen page that shows the AuthSection (Login UI).
@@ -26,7 +26,6 @@ function LoginPage() {
         <div className="w-full md:w-1/2 px-6 py-8">
           <AuthSection />
         </div>
-        
       </div>
     </div>
   );
@@ -44,4 +43,3 @@ export default LoginPage;
 | `object-cover`        | Makes the login image neatly fill the left side                              |
 | `max-w-5xl`           | Keeps the form from stretching too much on wide screens                      |
 */
-
