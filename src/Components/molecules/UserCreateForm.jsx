@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Input from "../atoms/Input";
-import axios from "axios";
+import { addUser } from "../../services/userService";
 
 const roles = [
   "Cleaner",
@@ -48,26 +48,25 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://localhost:7172/api/Account/add-user", form, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      const token = localStorage.getItem("token");
+      await addUser(form, token);
+      alert("User added successfully");
+      setForm({
+        email: "",
+        firstName: "",
+        lastName: "",
+        dob: "",
+        address: "",
+        supervisorID: "",
+        contactNumber: "",
+        password: "",
+        role: "",
       });
-
-      console.log("User added successfully");
+      onClose();
     } catch (error) {
-      console.error("Error adding user:", error);
+      alert("Failed to add user");
+      console.error(error);
     }
-    setForm({
-      email: "",
-      firstName: "",
-      lastName: "",
-      dob: "",
-      address: "",
-      supervisorID: "",
-      contactNumber: "",
-      password: "",
-      role: "",
-    });
-    onClose();
   };
 
   return (
