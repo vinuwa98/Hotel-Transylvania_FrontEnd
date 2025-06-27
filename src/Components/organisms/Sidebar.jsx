@@ -18,11 +18,11 @@ const Sidebar = () => {
       <div className="p-6 font-bold text-xl text-blue-700" style={{ color: themeColors.White }}>Hotel Transylvania</div>
       
       <nav className="mt-6 space-y-2">
-          <a href="#" className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md" style={{ color: themeColors.White}}>
+          <a href="/dashboard" className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md" style={{ color: themeColors.White}}>
               <LayoutDashboard/>
               <span>Dashboard</span>
             </a>
-          <a href="#" className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md" style={{ color: themeColors.White }}>
+          <a href="/manage-user" className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md" style={{ color: themeColors.White }}>
               <UserRoundPen />
               <span>Manage Users</span>
           </a>
