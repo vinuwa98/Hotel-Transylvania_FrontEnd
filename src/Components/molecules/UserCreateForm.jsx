@@ -7,7 +7,13 @@ import Typography from "@mui/material/Typography";
 import Input from "../atoms/Input";
 import axios from "axios";
 
-const roles = ["Cleaner", "HelpDesk", "Supervisor", "MaintenanceStaff", "MaintenanceManager"];
+const roles = [
+  "Cleaner",
+  "HelpDesk",
+  "Supervisor",
+  "MaintenanceStaff",
+  "MaintenanceManager",
+];
 
 const style = {
   position: "absolute",
@@ -42,7 +48,9 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://localhost:7172/api/Account/add-user", form);
+      await axios.post("https://localhost:7172/api/Account/add-user", form, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
 
       console.log("User added successfully");
     } catch (error) {
@@ -65,16 +73,73 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style} component="form" onSubmit={handleSubmit}>
-        <Typography variant="h6" mb={2}>Add User</Typography>
+        <Typography variant="h6" mb={2}>
+          Add User
+        </Typography>
 
-        <Input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <Input type="text" name="firstName" placeholder="First Name" value={form.firstName} onChange={handleChange} required />
-        <Input type="text" name="lastName" placeholder="Last Name" value={form.lastName} onChange={handleChange} required />
-        <Input type="date" name="dob" placeholder="Date of Birth" value={form.dob} onChange={handleChange} required />
-        <Input type="text" name="address" placeholder="Address" value={form.address} onChange={handleChange} required />
-        <Input type="text" name="supervisorID" placeholder="Supervisor ID" value={form.supervisorID} onChange={handleChange} />
-        <Input type="text" name="contactNumber" placeholder="Contact Number" value={form.contactNumber} onChange={handleChange} required />
-        <Input type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
+        <Input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="firstName"
+          placeholder="First Name"
+          value={form.firstName}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={form.lastName}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="date"
+          name="dob"
+          placeholder="Date of Birth"
+          value={form.dob}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="address"
+          placeholder="Address"
+          value={form.address}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="text"
+          name="supervisorID"
+          placeholder="Supervisor ID"
+          value={form.supervisorID}
+          onChange={handleChange}
+        />
+        <Input
+          type="text"
+          name="contactNumber"
+          placeholder="Contact Number"
+          value={form.contactNumber}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
 
         <select
           name="role"
@@ -85,13 +150,17 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
         >
           <option value="">Select Role</option>
           {roles.map((role) => (
-            <option key={role} value={role}>{role}</option>
+            <option key={role} value={role}>
+              {role}
+            </option>
           ))}
         </select>
 
         <Box mt={2} display="flex" justifyContent="flex-end" gap={1}>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained">Add</Button>
+          <Button type="submit" variant="contained">
+            Add
+          </Button>
         </Box>
       </Box>
     </Modal>
