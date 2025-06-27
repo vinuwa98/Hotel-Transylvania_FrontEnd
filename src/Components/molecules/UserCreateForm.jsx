@@ -98,7 +98,6 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
           placeholder="Last Name"
           value={form.lastName}
           onChange={handleChange}
-          required
         />
         <Input
           type="date"
@@ -106,7 +105,6 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
           placeholder="Date of Birth"
           value={form.dob}
           onChange={handleChange}
-          required
         />
         <Input
           type="text"
@@ -129,7 +127,6 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
           placeholder="Contact Number"
           value={form.contactNumber}
           onChange={handleChange}
-          required
         />
         <Input
           type="password"
