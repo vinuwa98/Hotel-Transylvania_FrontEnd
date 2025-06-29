@@ -5,17 +5,17 @@ import authService from '../../services/authService'; // fake login service for 
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
-  // ✅ Input field states
+  // Input field states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // ✅ Extra states for UI
+  // Extra states for UI
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // For page redirection
 
-  // ✅ Handle login logic
+  // Handle login logic
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent form refresh
     setLoading(true);   // Show loading state
@@ -24,11 +24,11 @@ function LoginForm() {
     try {
       const user = await authService.login({ email, password });
 
-      // ✅ Optionally store token or user info
+      // Optionally store token or user info
       localStorage.setItem('token', user.token);
       localStorage.setItem('name', user.name);
-
-      // ✅ Redirect to dashboard
+      
+      // Redirect to dashboard
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid email or password');
