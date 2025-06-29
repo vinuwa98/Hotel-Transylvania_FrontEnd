@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -27,7 +27,7 @@ const style = {
   p: 4,
 };
 
-export default function UserFormModal({ open, onClose, user }) {
+export default function UserFormModal({ open, onClose, onSubmit }) {
   const [form, setForm] = useState({
     email: "",
     firstName: "",
@@ -39,34 +39,6 @@ export default function UserFormModal({ open, onClose, user }) {
     password: "",
     role: "",
   });
-
-  useEffect(() => {
-    if (user) {
-      setForm({
-        email: user.email || "",
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        dob: user.dob ? new Date(user.dob).toISOString().split("T")[0] : "",
-        address: user.address || "",
-        supervisorID: user.supervisorID || "",
-        contactNumber: user.contactNumber || "",
-        password: "",
-        role: user.role || "",
-      });
-    } else {
-      setForm({
-        email: "",
-        firstName: "",
-        lastName: "",
-        dob: "",
-        address: "",
-        supervisorID: "",
-        contactNumber: "",
-        password: "",
-        role: "",
-      });
-    }
-  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -82,7 +54,7 @@ export default function UserFormModal({ open, onClose, user }) {
       if (user) {
         // UPDATE mode
         const updateDto = {
-          userId: user.userId,
+          userId: user.userId, // make sure this comes from props
           email: form.email,
           firstName: form.firstName,
           lastName: form.lastName,
@@ -91,7 +63,7 @@ export default function UserFormModal({ open, onClose, user }) {
           contactNumber: form.contactNumber,
           role: form.role,
           supervisorID: form.supervisorID,
-          password: form.password || "Temp@123",
+          password: form.password || "Temp@123", // Optional: Handle if not updating password
         };
 
         await axios.put(
@@ -102,20 +74,19 @@ export default function UserFormModal({ open, onClose, user }) {
           }
         );
 
-        alert("User updated successfully");
+        console.log("User updated successfully");
       } else {
         // ADD mode
         await axios.post("https://localhost:7172/api/account/add-user", form, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        alert("User added successfully");
+        console.log("User added successfully");
       }
 
-      onClose(); // Close modal
+      onClose(); // close modal
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to submit user form");
     }
   };
 
@@ -123,7 +94,7 @@ export default function UserFormModal({ open, onClose, user }) {
     <Modal open={open} onClose={onClose}>
       <Box sx={style} component="form" onSubmit={handleSubmit}>
         <Typography variant="h6" mb={2}>
-          {user ? "Edit User" : "Add User"}
+          Add User
         </Typography>
 
         <Input
@@ -187,7 +158,7 @@ export default function UserFormModal({ open, onClose, user }) {
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
-          required={!user} // Required only for new user
+          required
         />
 
         <select
@@ -208,7 +179,7 @@ export default function UserFormModal({ open, onClose, user }) {
         <Box mt={2} display="flex" justifyContent="flex-end" gap={1}>
           <Button onClick={onClose}>Cancel</Button>
           <Button type="submit" variant="contained">
-            {user ? "Update" : "Add"}
+            Add
           </Button>
         </Box>
       </Box>
