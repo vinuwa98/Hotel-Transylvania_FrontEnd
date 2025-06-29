@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
+import { themeColors } from '../../Theme/colors';
 import authService from '../../services/authService'; // fake login service for now
 import { useNavigate } from 'react-router-dom';
 
@@ -64,6 +65,8 @@ function LoginForm() {
       <Button
         label={loading ? 'Logging in...' : 'Login'}
         type="submit"
+        style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
+        className="w-full"
         disabled={loading}
       />
 

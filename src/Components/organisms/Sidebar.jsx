@@ -14,8 +14,8 @@ const Sidebar = () => {
   return (
     <aside className="w-64 shadow-md h-full hidden md:flex flex-col" style={{backgroundColor: themeColors.DarkBlue}}>
 
-      <div className="p-6 font-bold text-4xl text-blue-700 text-center" style={{ color: themeColors.White }}>Logo</div>
-      <div className="p-6 font-bold text-xl text-blue-700" style={{ color: themeColors.White }}>Hotel Maintenace System</div>
+      <div className="p-6 font-bold text-4xl  text-center" style={{ color: themeColors.White }}>Logo</div>
+      <div className="p-6 font-bold text-xl" style={{ color: themeColors.White }}>Hotel Maintenace System</div>
       
       <nav className="mt-6 space-y-2">
           <a href="/dashboard" className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md" style={{ color: themeColors.White}}>
