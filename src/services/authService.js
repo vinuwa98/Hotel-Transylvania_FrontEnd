@@ -17,6 +17,8 @@ const login = async ({ email, password }) => {
  
 const authService = {
   login,
-};
+}; 
+
+
  
 export default authService;
