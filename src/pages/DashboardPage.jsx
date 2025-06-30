@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.jsx
 import React from 'react';
 import Sidebar from '../Components/organisms/Sidebar';
 import Header from '../Components/molecules/Header';
@@ -9,7 +8,7 @@ const DashboardPage = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <Header/>
+        <Header />
         <main className="p-6">
           <DashboardCards />
         </main>
