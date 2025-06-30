@@ -4,7 +4,7 @@ import Header from '../Components/molecules/Header';
 import Button from '../Components/atoms/Button';
 import UserFormModal from '../Components/molecules/UserCreateForm';
 import { themeColors } from '../Theme/colors';
-import { fetchUsers } from '../services/userService';
+import { fetchUsers, deactivateUser  } from '../services/userService';
 
 const ManageUsersPage = () => {
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -23,6 +23,20 @@ const ManageUsersPage = () => {
 
     loadUsers();
   }, []);
+
+
+  // deactivate part
+  const handleDeactivate = async (userId) => {
+  try {
+    const token = localStorage.getItem('token');
+    await deactivateUser(userId, token);
+    // Refresh the user list
+    const updatedUsers = await fetchUsers(token);
+    setUsers(updatedUsers);
+  } catch (error) {
+    console.error("Failed to deactivate user:", error);
+  }
+}; 
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -44,7 +58,7 @@ const ManageUsersPage = () => {
             <thead>
               <tr>
                 <th className="border px-4 py-2">Full Name</th>
-                <th className="border px-4 py-2">DOB</th>
+                <th className="border px-4 py-2">Role</th>
                 <th className="border px-4 py-2">Address</th>
                 <th className="border px-4 py-2">Contact</th>
                 <th className="border px-4 py-2">Status</th>
@@ -55,7 +69,7 @@ const ManageUsersPage = () => {
               {users.map((user, index) => (
                 <tr key={index} className="text-center">
                   <td className="border px-4 py-2">{user.fullName}</td>
-                  <td className="border px-4 py-2">{new Date(user.dob).toLocaleDateString()}</td>
+                  <td className="border px-4 py-2">{user.role}</td>
                   <td className="border px-4 py-2">{user.address}</td>
                   <td className="border px-4 py-2">{user.contactNumber}</td>
                   <td className="border px-4 py-2">{user.status}</td>

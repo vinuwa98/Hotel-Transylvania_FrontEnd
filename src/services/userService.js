@@ -19,5 +19,15 @@ const fetchUsers = async (token) => {
   return response.data;
 }; 
 
+export const deactivateUser = async (userId, token) => {
+  const response = await axios.put(`${API_BASE_URL}/Account/deactivate-user/${userId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+
 export { fetchUsers };
 export { addUser };
