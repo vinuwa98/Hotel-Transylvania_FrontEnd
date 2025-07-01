@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import Input from '../atoms/Input';
 import Button from '../atoms/Button';
+import { themeColors } from '../../Theme/colors';
 import authService from '../../services/authService'; // fake login service for now
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
-  // ✅ Input field states
+  // Input field states
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // ✅ Extra states for UI
+  // Extra states for UI
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // For page redirection
 
-  // ✅ Handle login logic
+  // Handle login logic
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent form refresh
     setLoading(true);   // Show loading state
@@ -64,6 +65,8 @@ function LoginForm() {
       <Button
         label={loading ? 'Logging in...' : 'Login'}
         type="submit"
+        style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
+        className="w-full"
         disabled={loading}
       />
 
