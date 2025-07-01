@@ -81,6 +81,7 @@ const ManageUsersPage = () => {
                       />
                       <Button 
                         label={"Deactivate"} 
+                        onClick={() => handleDeactivate(user.id)}
                         style={{backgroundColor: themeColors.Red, color: themeColors.White}}
                       />
                     </div>
