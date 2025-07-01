@@ -25,17 +25,30 @@ const ManageUsersPage = () => {
   }, []);
 
 
-  // deactivate part
-  const handleDeactivate = async (userId) => {
-  try {
-    const token = localStorage.getItem('token');
-    await deactivateUser(userId, token);
-    // Refresh the user list
-    const updatedUsers = await fetchUsers(token);
-    setUsers(updatedUsers);
-  } catch (error) {
-    console.error("Failed to deactivate user:", error);
-  }
+  // Deactivate the users
+  const handleDeactivate = async (userId, currentStatus) => {
+
+    const isDeactivating = currentStatus === "Active";
+    const confirmMsg = isDeactivating
+      ? "Are you sure you want to deactivate this user?"
+      : "Are you sure you want to activate this user?";
+
+    const confirmed = window.confirm(confirmMsg);
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem('token');
+      await deactivateUser(userId, token);
+
+      alert(`User has been ${isDeactivating ? "deactivated" : "activated"} successfully.`); 
+
+      // Refresh the user list
+      const updatedUsers = await fetchUsers(token);
+      setUsers(updatedUsers);
+    } catch (error) {
+      console.error("Failed to deactivate user:", error);
+      alert("Something went wrong while updating user status.");
+    }
 }; 
 
   return (
@@ -80,9 +93,9 @@ const ManageUsersPage = () => {
                           style={{backgroundColor: themeColors.Green, color: themeColors.White}}
                       />
                       <Button 
-                        label={"Deactivate"} 
-                        onClick={() => handleDeactivate(user.id)}
-                        style={{backgroundColor: themeColors.Red, color: themeColors.White}}
+                        label={user.status === "Active" ? "Deactivate" : "Activate"} 
+                        onClick={() => handleDeactivate(user.id, user.status)}
+                        style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.Blue3rd, color: themeColors.White}}
                       />
                     </div>
                   </td>

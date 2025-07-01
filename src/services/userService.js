@@ -19,7 +19,8 @@ const fetchUsers = async (token) => {
   return response.data;
 }; 
 
-// Send a PUT request to deactivate user by thieir userId
+
+// Send a PUT request to deactivate user by their userId
 const deactivateUser = async (userId, token) => {
   const response = await axios.put(`${API_BASE_URL}/Account/deactivate-user/${userId}`, null, {
     headers: {
