@@ -3,7 +3,7 @@ import axios from "axios";
 const API_BASE_URL = "https://localhost:7172/api";
 
 const addUser = async (userData, token) => {
-  const response = await axios.post(`${API_BASE_URL}/Account/add-user`, userData, {
+  const response = await axios.post(`${API_BASE_URL}/User/add-user`, userData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;
@@ -11,7 +11,7 @@ const addUser = async (userData, token) => {
 
 // Sends a GET request to fetch all users
 const fetchUsers = async (token) => {
-  const response = await axios.get(`${API_BASE_URL}/Account/get-users`, {
+  const response = await axios.get(`${API_BASE_URL}/User/get-users`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

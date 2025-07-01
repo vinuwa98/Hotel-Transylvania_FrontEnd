@@ -4,7 +4,7 @@ const API_BASE_URL = "https://localhost:7172/api";
  
 const login = async ({ email, password }) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Account/login`, {
+    const response = await axios.post(`${API_BASE_URL}/User/login`, {
       email,
       password,
     });
