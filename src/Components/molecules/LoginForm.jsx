@@ -26,10 +26,10 @@ function LoginForm() {
       const user = await authService.login({ email, password });
 
       // Optionally store token or user info
-      localStorage.setItem('token', user.token);
-      localStorage.setItem('name', user.name);
-      
-      // Redirect to dashboard
+      localStorage.setItem('token', user.data.token);
+      localStorage.setItem('name', user.data.name);
+
+      // ✅ Redirect to dashboard
       navigate('/dashboard');
     } catch (err) {
       setError('Invalid email or password');
