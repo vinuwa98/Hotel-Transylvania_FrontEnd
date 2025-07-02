@@ -12,7 +12,7 @@ export const getUserCount = async () => {
   try {
     const token = getAuthToken();
 
-    const response = await axios.get(`${BASE_URL}/Users/count`, {
+    const response = await axios.get(`${BASE_URL}/User/get-count`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
