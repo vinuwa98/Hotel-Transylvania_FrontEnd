@@ -95,7 +95,7 @@ const ManageUsersPage = () => {
                       <Button 
                         label={user.status === "Active" ? "Deactivate" : "Activate"} 
                         onClick={() => handleDeactivate(user.id, user.status)}
-                        style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.Blue3rd, color: themeColors.White}}
+                        style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.LightBlue, color: themeColors.White}}
                       />
                     </div>
                   </td>
