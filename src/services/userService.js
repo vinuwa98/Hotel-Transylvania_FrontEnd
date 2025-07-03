@@ -22,14 +22,28 @@ const fetchUsers = async (token) => {
 
 // Send a PUT request to deactivate user by their userId
 const deactivateUser = async (userId, token) => {
-  const response = await axios.put(`${API_BASE_URL}/User/deactivate-user/${userId}`, null, {
+  const response = await axios.put(`${API_BASE_URL}/User/deactivate-user`, userId, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
   });
   return response.data;
 };
 
+
+// Send a PUT request to activate user by their userId
+const activateUser = async (userId, token) => {
+  const response = await axios.put(`${API_BASE_URL}/User/activate-user`, userId, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data;
+};
+
+export { activateUser };
 export { deactivateUser };
 export { fetchUsers };
 export { addUser };

@@ -4,19 +4,23 @@ import Header from '../Components/molecules/Header';
 import Button from '../Components/atoms/Button';
 import UserFormModal from '../Components/molecules/UserCreateForm';
 import { themeColors } from '../Theme/colors';
-import { fetchUsers, deactivateUser  } from '../services/userService';
+import { fetchUsers, deactivateUser, activateUser } from '../services/userService';
 
 const ManageUsersPage = () => {
+
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const loadUsers = async () => {
-      try {
+      try 
+      {
         const token = localStorage.getItem('token');
         const usersData = await fetchUsers(token);
         setUsers(usersData);
-      } catch (error) {
+      } 
+      catch (error) 
+      {
         console.error('Error fetching users:', error);
       }
     };
@@ -36,38 +40,49 @@ const ManageUsersPage = () => {
     const confirmed = window.confirm(confirmMsg);
     if (!confirmed) return;
 
-    try {
+    try 
+    {
       const token = localStorage.getItem('token');
-      await deactivateUser(userId, token);
+      
+      if (isDeactivating) 
+      {
+        await deactivateUser(userId, token);
+      } 
+      else 
+      {
+        await activateUser(userId, token);
+      }
 
       alert(`User has been ${isDeactivating ? "deactivated" : "activated"} successfully.`); 
 
       // Refresh the user list
       const updatedUsers = await fetchUsers(token);
       setUsers(updatedUsers);
-    } catch (error) {
+    } 
+    catch (error) 
+    {
       console.error("Failed to deactivate user:", error);
       alert("Something went wrong while updating user status.");
     }
 }; 
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen" style={{ backgroundColor: themeColors.Gray }}>
       <Sidebar />
       <div className="flex flex-col flex-1">
         <Header />
 
         <div className="p-4">
-          <h2 className="text-4xl font-bold mb-4">Manage Users</h2>
+          <h2 className="text-4xl font-bold mb-4 text-center">Manage Users</h2>
           <UserFormModal open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
           <Button 
             label={"Add New User"} 
             onClick={() => setAddUserModalOpen(true)} 
             style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
-            className="w-fit px-4 py-2"
+            className="w-fit px-4 py-2 rounded-md mb-4 hover:opacity-90 transition"
           />
 
-          <table className="min-w-full border mt-4">
+          {/* <table className="min-w-full border mt-4">
             <thead>
               <tr>
                 <th className="border px-4 py-2">Full Name</th>
@@ -90,13 +105,17 @@ const ManageUsersPage = () => {
                     <div className="flex gap-2 justify-center">
                       <Button 
                           label={"Edit"} 
+                          className="w-full"
                           style={{backgroundColor: themeColors.Green, color: themeColors.White}}
                       />
                       <Button 
                         label={user.status === "Active" ? "Deactivate" : "Activate"} 
+                        className="w-full"
                         onClick={() => handleDeactivate(user.id, user.status)}
                         style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.LightBlue, color: themeColors.White}}
                       />
+
+
                     </div>
                   </td>
                 </tr>
@@ -107,7 +126,89 @@ const ManageUsersPage = () => {
                 </tr>
               )}
             </tbody>
-          </table>
+          </table> */}
+
+          <div className="overflow-x-auto shadow-lg rounded-lg">
+            <table className="min-w-full text-lg text-center border-collapse">
+              <thead style={{ backgroundColor: themeColors.DarkBlue, color: themeColors.White }}>
+                <tr>
+                  <th className="px-6 py-3 font-medium">Full Name</th>
+                  <th className="px-6 py-3 font-medium">Role</th>
+                  <th className="px-6 py-3 font-medium">Address</th>
+                  <th className="px-6 py-3 font-medium">Contact</th>
+                  <th className="px-6 py-3 font-medium">Status</th>
+                  <th className="px-6 py-3 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user, index) => (
+                  <tr
+                    key={index}
+                    className={`text-center`}
+                  >
+                    <td className="px-6 py-4">{user.fullName}</td>
+                    <td className="px-6 py-4">{user.role}</td>
+                    <td className="px-6 py-4">{user.address}</td>
+                    <td className="px-6 py-4">{user.contactNumber}</td>
+                    <td className="px-6 py-4">
+
+                      <span
+                        style={{ 
+                          backgroundColor: user.status === 'Active' 
+                              ? themeColors.LightGreen 
+                              : themeColors.LightRed,
+
+                          color: user.status === 'Active' 
+                              ? themeColors.Green 
+                              : themeColors.Red 
+                        }}
+                        
+                        className={`px-4 py-2 rounded-lg text-xl font-medium`}
+                      >
+                        {user.status}
+                      </span>
+                      
+
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex justify-center gap-3">
+                        <Button
+                          label={'Edit'}
+                          className="w-24"
+                          style={{
+                            backgroundColor: themeColors.Green,
+                            color: themeColors.White,
+                          }}
+                        />
+                        <Button
+                          label={user.status === 'Active' ? 'Deactivate' : 'Activate'}
+                          className="w-24"
+                          onClick={() => handleDeactivate(user.id, user.status)}
+                          style={{
+                            backgroundColor:
+                              user.status === 'Active'
+                                ? themeColors.Red
+                                : themeColors.LightBlue,
+                            color: themeColors.White,
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {users.length === 0 && (
+                  <tr>
+                    <td 
+                    className="px-6 py-4 text-center" colSpan="6"
+                    style={{ color: themeColors.Gray500 }}
+                    >
+                      No users found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

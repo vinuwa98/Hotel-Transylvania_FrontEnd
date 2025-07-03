@@ -3,7 +3,11 @@ export const themeColors = {
   Blue: '#144272',   // Light Blue
   Blue3rd: '#205295',      // Amber
   LightBlue: '#2C74B3', 
-  White: '#FFFFFF',   
+  White: '#FFFFFF',  // white
   Green: '#347433', // green
-  Red: '#B22222' // red
+  LightGreen: '#d1fae5', // light green
+  LightRed: '#fee2e2', // light red
+  Red: '#B22222', // red
+  Gray: '#F3F4F6', // light gray
+  Gray500: '#6b7280' // gray-500
 };
