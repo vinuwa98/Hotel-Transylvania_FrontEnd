@@ -2,76 +2,64 @@ import React, { useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Input from "../atoms/Input";
-import { addUser } from "../../services/userService";
+import DropdownList from "../atoms/DropdownList";
+import { useFormik } from "formik";
+import userSchema from "../../schemas/userSchema";
 
-const roles = [
-  "Cleaner",
-  "HelpDesk",
-  "Supervisor",
-  "MaintenanceStaff",
-  "MaintenanceManager",
-];
+const UserForm = ({ open, onClose, handleSubmit }) => {
+  const [selectedRole, setSelectedRole] = useState("");
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-};
-
-export default function UserFormModal({ open, onClose, onSubmit }) {
-  const [form, setForm] = useState({
-    email: "",
-    firstName: "",
-    lastName: "",
-    dob: "",
-    address: "",
-    supervisorID: "",
-    contactNumber: "",
-    password: "",
-    role: "",
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      firstName: "",
+      lastName: "",
+      dob: "",
+      address: "",
+      role: "",
+      supervisorID: "",
+      contactNumber: "",
+      password: "",
+    },
+    validationSchema: userSchema,
+    onSubmit: (values) => {
+      console.log("Form submitted:", values);
+      handleSubmit({ form: values, token: localStorage.getItem("token") });
+    },
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const roles = [
+    "Cleaner",
+    "HelpDesk",
+    "Supervisor",
+    "MaintenanceStaff",
+    "MaintenanceManager",
+  ];
+
+  const modalStyles = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      await addUser(form, token);
-      alert("User added successfully");
-      setForm({
-        email: "",
-        firstName: "",
-        lastName: "",
-        dob: "",
-        address: "",
-        supervisorID: "",
-        contactNumber: "",
-        password: "",
-        role: "",
-      });
-      onClose();
-    } catch (error) {
-      alert("Failed to add user");
-      console.error(error);
-    }
+  const formStyles = {
+    width: "40vw",
+    overflowY: "auto",
+    maxHeight: "90vh",
+    bgcolor: "background.paper",
+    borderRadius: 2,
+    boxShadow: 24,
+    p: 4,
+    display: "flex",
+    flexDirection: "column",
+    gap: 2,
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box sx={style} component="form" onSubmit={handleSubmit}>
+    <Modal sx={modalStyles} open={open} onClose={onClose}>
+      <Box sx={formStyles} component="form" onSubmit={formik.handleSubmit}>
         <Typography variant="h6" mb={2}>
           Add User
         </Typography>
@@ -80,85 +68,162 @@ export default function UserFormModal({ open, onClose, onSubmit }) {
           type="email"
           name="email"
           placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.email)}
           required
         />
+        {formik.errors.email && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.email}
+          </Typography>
+        )}
+
         <Input
           type="text"
           name="firstName"
           placeholder="First Name"
-          value={form.firstName}
-          onChange={handleChange}
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.firstName)}
           required
         />
+        {formik.errors.firstName && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.firstName}
+          </Typography>
+        )}
+
         <Input
           type="text"
           name="lastName"
           placeholder="Last Name"
-          value={form.lastName}
-          onChange={handleChange}
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.lastName)}
         />
+        {formik.errors.lastName && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.lastName}
+          </Typography>
+        )}
+
         <Input
           type="date"
           name="dob"
           placeholder="Date of Birth"
-          value={form.dob}
-          onChange={handleChange}
+          value={formik.values.dob}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.dob)}
         />
+        {formik.errors.dob && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.dob}
+          </Typography>
+        )}
+
         <Input
           type="text"
           name="address"
           placeholder="Address"
-          value={form.address}
-          onChange={handleChange}
+          value={formik.values.address}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.address)}
           required
         />
-        <Input
-          type="text"
-          name="supervisorID"
-          placeholder="Supervisor ID"
-          value={form.supervisorID}
-          onChange={handleChange}
+        {formik.errors.address && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.address}
+          </Typography>
+        )}
+
+        <DropdownList
+          name="role"
+          value={formik.values.role}
+          onChange={(e) => {
+            formik.handleChange(e);
+            setSelectedRole(e.target.value);
+          }}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.role)}
+          required
+          options={roles}
+          placeholder="Select Role"
         />
+        {formik.errors.role && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.role}
+          </Typography>
+        )}
+
+        {selectedRole === "Cleaner" && (
+          <>
+            <Input
+              type="text"
+              name="supervisorID"
+              placeholder="Supervisor ID (e.g., SUP123456)"
+              value={formik.values.supervisorID}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={Boolean(formik.errors.supervisorID)}
+            />
+            {formik.errors.supervisorID && (
+              <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+                {formik.errors.supervisorID}
+              </Typography>
+            )}
+          </>
+        )}
+
         <Input
           type="text"
           name="contactNumber"
           placeholder="Contact Number"
-          value={form.contactNumber}
-          onChange={handleChange}
+          value={formik.values.contactNumber}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.contactNumber)}
         />
+        {formik.errors.contactNumber && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.contactNumber}
+          </Typography>
+        )}
+
         <Input
           type="password"
           name="password"
           placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={Boolean(formik.errors.password)}
           required
         />
-
-        <select
-          name="role"
-          value={form.role}
-          onChange={handleChange}
-          required
-          className="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select Role</option>
-          {roles.map((role) => (
-            <option key={role} value={role}>
-              {role}
-            </option>
-          ))}
-        </select>
+        {formik.errors.password && (
+          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+            {formik.errors.password}
+          </Typography>
+        )}
 
         <Box mt={2} display="flex" justifyContent="flex-end" gap={1}>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained">
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!formik.isValid || !formik.dirty}
+          >
             Add
           </Button>
         </Box>
       </Box>
     </Modal>
   );
-}
+};
+
+export default UserForm;

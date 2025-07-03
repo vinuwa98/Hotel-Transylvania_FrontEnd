@@ -5,6 +5,7 @@ import Button from '../Components/atoms/Button';
 import UserFormModal from '../Components/molecules/UserCreateForm';
 import { themeColors } from '../Theme/colors';
 import { fetchUsers, deactivateUser, activateUser } from '../services/userService';
+import { fetchUsers, deactivateUser, addUser  } from '../services/userService';
 
 const ManageUsersPage = () => {
 
@@ -75,6 +76,12 @@ const ManageUsersPage = () => {
         <div className="p-4">
           <h2 className="text-4xl font-bold mb-4 text-center">Manage Users</h2>
           <UserFormModal open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
+          <h2 className="text-4xl font-bold mb-4">Manage Users</h2>
+          <UserFormModal
+            open={addUserModalOpen}
+            onClose={() => setAddUserModalOpen(false)}
+            handleSubmit={async (data) => await addUser(data.form, data.token)}
+          />
           <Button 
             label={"Add New User"} 
             onClick={() => setAddUserModalOpen(true)} 
