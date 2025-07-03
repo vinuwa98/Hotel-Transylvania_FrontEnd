@@ -63,11 +63,7 @@ const userSchema = yup.object({
     is: "Cleaner",
     then: (schema) =>
       schema
-        .required("Supervisor ID is required for Cleaner role")
-        .matches(
-          /^[A-Z0-9]{6,10}$/,
-          "Supervisor ID must be 6-10 characters (letters and numbers only)"
-        ),
+        .required("Supervisor ID is required for Cleaner role"),
     otherwise: (schema) => schema.notRequired(),
   }),
 

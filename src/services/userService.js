@@ -2,34 +2,56 @@ import axios from "axios";
 
 const API_BASE_URL = "https://localhost:7172/api";
 
-const addUser = async (userData, token) => {
-  const response = await axios.post(`${API_BASE_URL}/User/add-user`, userData, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export const addUser = async (userData, token) => {
+  const response = await axios
+    .post(`${API_BASE_URL}/User/add-user`, userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      if (res.status === 200) {
+        alert("User added successfully!");
+      }
+    })
+    .catch((err) => {
+      alert(err.response.data);
+    });
+  return response.data;
+};
+
+export const getSupervisors = async (token) => {
+  const response = await axios
+    .get(`${API_BASE_URL}/User/get-supervisors`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .catch((err) => {
+      alert(err.response.data);
+    });
+  console.log(response.data);
   return response.data;
 };
 
 // Sends a GET request to fetch all users
-const fetchUsers = async (token) => {
+export const fetchUsers = async (token) => {
   const response = await axios.get(`${API_BASE_URL}/User/get-users`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
-}; 
-
-
-// Send a PUT request to deactivate user by their userId
-const deactivateUser = async (userId, token) => {
-  const response = await axios.put(`${API_BASE_URL}/User/deactivate-user/${userId}`, null, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
 };
 
-export { deactivateUser };
-export { fetchUsers };
-export { addUser };
+// Send a PUT request to deactivate user by their userId
+export const deactivateUser = async (userId, token) => {
+  const response = await axios.put(
+    `${API_BASE_URL}/User/deactivate-user/${userId}`,
+    null,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
