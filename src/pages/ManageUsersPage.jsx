@@ -4,8 +4,8 @@ import Header from '../Components/molecules/Header';
 import Button from '../Components/atoms/Button';
 import UserFormModal from '../Components/molecules/UserCreateForm';
 import { themeColors } from '../Theme/colors';
-import { fetchUsers, deactivateUser, activateUser } from '../services/userService';
-import { fetchUsers, deactivateUser, addUser  } from '../services/userService';
+import { fetchUsers, deactivateUser, activateUser, addUser } from '../services/userService';
+
 
 const ManageUsersPage = () => {
 
@@ -76,7 +76,6 @@ const ManageUsersPage = () => {
         <div className="p-4">
           <h2 className="text-4xl font-bold mb-4 text-center">Manage Users</h2>
           <UserFormModal open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
-          <h2 className="text-4xl font-bold mb-4">Manage Users</h2>
           <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
@@ -88,52 +87,6 @@ const ManageUsersPage = () => {
             style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
             className="w-fit px-4 py-2 rounded-md mb-4 hover:opacity-90 transition"
           />
-
-          {/* <table className="min-w-full border mt-4">
-            <thead>
-              <tr>
-                <th className="border px-4 py-2">Full Name</th>
-                <th className="border px-4 py-2">Role</th>
-                <th className="border px-4 py-2">Address</th>
-                <th className="border px-4 py-2">Contact</th>
-                <th className="border px-4 py-2">Status</th>
-                <th className="border px-4 py-2">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border px-4 py-2">{user.fullName}</td>
-                  <td className="border px-4 py-2">{user.role}</td>
-                  <td className="border px-4 py-2">{user.address}</td>
-                  <td className="border px-4 py-2">{user.contactNumber}</td>
-                  <td className="border px-4 py-2">{user.status}</td>
-                  <td className="border px-4 py-2">
-                    <div className="flex gap-2 justify-center">
-                      <Button 
-                          label={"Edit"} 
-                          className="w-full"
-                          style={{backgroundColor: themeColors.Green, color: themeColors.White}}
-                      />
-                      <Button 
-                        label={user.status === "Active" ? "Deactivate" : "Activate"} 
-                        className="w-full"
-                        onClick={() => handleDeactivate(user.id, user.status)}
-                        style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.LightBlue, color: themeColors.White}}
-                      />
-
-
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {users.length === 0 && (
-                <tr>
-                  <td className="border px-4 py-2 text-center" colSpan="6">No users found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table> */}
 
           <div className="overflow-x-auto shadow-lg rounded-lg">
             <table className="min-w-full text-lg text-center border-collapse">
