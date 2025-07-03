@@ -62,7 +62,7 @@ const ManageUsersPage = () => {
           <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
-            onSubmit={async (data) => await addUser(data.form, data.token)}
+            handleSubmit={async (data) => await addUser(data.form, data.token)}
           />
           <Button 
             label={"Add New User"} 

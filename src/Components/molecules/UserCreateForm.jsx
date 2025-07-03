@@ -27,7 +27,6 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
     onSubmit: (values) => {
       console.log("Form submitted:", values);
       handleSubmit({ form: values, token: localStorage.getItem("token") });
-      alert("User added successfully!");
     },
   });
 
