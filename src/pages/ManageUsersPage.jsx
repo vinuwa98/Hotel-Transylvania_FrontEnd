@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../Components/organisms/Sidebar';
-import Header from '../Components/molecules/Header';
-import Button from '../Components/atoms/Button';
-import UserFormModal from '../Components/molecules/UserCreateForm';
-import { themeColors } from '../Theme/colors';
-import { fetchUsers, deactivateUser, addUser  } from '../services/userService';
+import React, { useEffect, useState } from "react";
+import Sidebar from "../Components/organisms/Sidebar";
+import Header from "../Components/molecules/Header";
+import Button from "../Components/atoms/Button";
+import UserFormModal from "../Components/molecules/UserCreateForm";
+import { themeColors } from "../Theme/colors";
+import { fetchUsers, deactivateUser, addUser } from "../services/userService";
 
 const ManageUsersPage = () => {
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -13,21 +13,19 @@ const ManageUsersPage = () => {
   useEffect(() => {
     const loadUsers = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         const usersData = await fetchUsers(token);
         setUsers(usersData);
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error("Error fetching users:", error);
       }
     };
 
     loadUsers();
   }, []);
 
-
   // Deactivate the users
   const handleDeactivate = async (userId, currentStatus) => {
-
     const isDeactivating = currentStatus === "Active";
     const confirmMsg = isDeactivating
       ? "Are you sure you want to deactivate this user?"
@@ -37,10 +35,14 @@ const ManageUsersPage = () => {
     if (!confirmed) return;
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       await deactivateUser(userId, token);
 
-      alert(`User has been ${isDeactivating ? "deactivated" : "activated"} successfully.`); 
+      alert(
+        `User has been ${
+          isDeactivating ? "deactivated" : "activated"
+        } successfully.`
+      );
 
       // Refresh the user list
       const updatedUsers = await fetchUsers(token);
@@ -49,7 +51,7 @@ const ManageUsersPage = () => {
       console.error("Failed to deactivate user:", error);
       alert("Something went wrong while updating user status.");
     }
-}; 
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -62,12 +64,20 @@ const ManageUsersPage = () => {
           <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
-            handleSubmit={async (data) => await addUser(data.form, data.token)}
+            handleSubmit={(data) => {
+              addUser(data.form, data.token).then((res) => {
+                console.log(res);
+                setAddUserModalOpen(false);
+              });
+            }}
           />
-          <Button 
-            label={"Add New User"} 
-            onClick={() => setAddUserModalOpen(true)} 
-            style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
+          <Button
+            label={"Add New User"}
+            onClick={() => setAddUserModalOpen(true)}
+            style={{
+              backgroundColor: themeColors.Blue3rd,
+              color: themeColors.White,
+            }}
             className="w-fit px-4 py-2"
           />
 
@@ -92,14 +102,25 @@ const ManageUsersPage = () => {
                   <td className="border px-4 py-2">{user.status}</td>
                   <td className="border px-4 py-2">
                     <div className="flex gap-2 justify-center">
-                      <Button 
-                          label={"Edit"} 
-                          style={{backgroundColor: themeColors.Green, color: themeColors.White}}
+                      <Button
+                        label={"Edit"}
+                        style={{
+                          backgroundColor: themeColors.Green,
+                          color: themeColors.White,
+                        }}
                       />
-                      <Button 
-                        label={user.status === "Active" ? "Deactivate" : "Activate"} 
+                      <Button
+                        label={
+                          user.status === "Active" ? "Deactivate" : "Activate"
+                        }
                         onClick={() => handleDeactivate(user.id, user.status)}
-                        style={{backgroundColor: user.status === "Active" ? themeColors.Red : themeColors.LightBlue, color: themeColors.White}}
+                        style={{
+                          backgroundColor:
+                            user.status === "Active"
+                              ? themeColors.Red
+                              : themeColors.LightBlue,
+                          color: themeColors.White,
+                        }}
                       />
                     </div>
                   </td>
@@ -107,7 +128,9 @@ const ManageUsersPage = () => {
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td className="border px-4 py-2 text-center" colSpan="6">No users found.</td>
+                  <td className="border px-4 py-2 text-center" colSpan="6">
+                    No users found.
+                  </td>
                 </tr>
               )}
             </tbody>

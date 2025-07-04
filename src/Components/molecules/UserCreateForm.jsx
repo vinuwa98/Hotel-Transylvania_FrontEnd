@@ -74,12 +74,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
   return (
     <Modal sx={modalStyles} open={open} onClose={onClose}>
       <Box sx={formStyles} component="form" onSubmit={formik.handleSubmit}>
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          align="center"
-          mb={3}
-        >
+        <Typography variant="h5" fontWeight="bold" align="center" mb={3}>
           Add User
         </Typography>
 
@@ -201,12 +196,24 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
               onBlur={formik.handleBlur}
               error={Boolean(formik.errors.supervisorID)}
               options={[
-                <DropdownOption key={0} value={""} label={"Select a supervisor"} />,
+                <DropdownOption
+                  key={0}
+                  value={""}
+                  label={"Select a supervisor"}
+                  isDefault={true}
+                />,
                 supervisors.map((s, index) => (
                   <DropdownOption
-                    key={index}
-                    value={s.supervisorID}
-                    label={s.firstName + " " + s.lastName}
+                    key={index + 1}
+                    value={s.supervisorId}
+                    label={
+                      s.firstName +
+                      " " +
+                      s.lastName +
+                      " (" +
+                      s.supervisorId +
+                      ")"
+                    }
                   />
                 )),
               ]}
