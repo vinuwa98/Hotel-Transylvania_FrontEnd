@@ -1,10 +1,11 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Page imports
-import LoginPage from '../pages/LoginPage';
-import DashboardPage from '../pages/DashboardPage';
-import ManageUsersPage from '../pages/ManageUsersPage';
+import LoginPage from "../pages/LoginPage";
+import DashboardPage from "../pages/DashboardPage";
+import ManageUsersPage from "../pages/ManageUsersPage";
+import ResetPassword from "../pages/ResetPasswordPage";
 
 /**
  * AppRoutes handles routing for the app.
@@ -19,7 +20,8 @@ function AppRoutes() {
         {/* ✅ Dashboard Route (shows after successful login) */}
         <Route path="/dashboard" element={<DashboardPage />} />
 
-        <Route path="/manage-user" element={<ManageUsersPage />} /> 
+        <Route path="/manage-user" element={<ManageUsersPage />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </Router>
   );

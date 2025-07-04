@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import userSchema from "../../schemas/userSchema";
 import { getSupervisors } from "../../services/userService";
 import { DropdownOption } from "../atoms/DropDownOption";
+import { DropdownOptionWithTitle } from "../atoms/DropdownOptionWithTitle";
 
 const UserForm = ({ open, onClose, handleSubmit }) => {
   const [selectedRole, setSelectedRole] = useState("");
@@ -196,24 +197,18 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
               onBlur={formik.handleBlur}
               error={Boolean(formik.errors.supervisorID)}
               options={[
-                <DropdownOption
+                <DropdownOptionWithTitle
                   key={0}
                   value={""}
-                  label={"Select a supervisor"}
+                  title={"Select a supervisor"}
                   isDefault={true}
                 />,
                 supervisors.map((s, index) => (
-                  <DropdownOption
+                  <DropdownOptionWithTitle
                     key={index + 1}
                     value={s.supervisorId}
-                    label={
-                      s.firstName +
-                      " " +
-                      s.lastName +
-                      " (" +
-                      s.supervisorId +
-                      ")"
-                    }
+                    title={s.firstName + " " + s.lastName}
+                    subtitle={s.supervisorId}
                   />
                 )),
               ]}
