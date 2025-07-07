@@ -10,9 +10,16 @@ import { Ban, ShieldCheck } from 'lucide-react';
 import { fetchUsers, deactivateUser, activateUser, addUser } from '../services/userService';
 
 
+
+
+
 const ManageUsersPage = () => {
 
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null); // MODIFICATION: Changed to use state for confirmAction
+const [confirmMessage, setConfirmMessage] = useState(""); // Optional but also needed
+const [confirmIcon, setConfirmIcon] = useState(null);     // Optional for icon
   const [editUserModalOpen, setEditUserModalOpen] = useState(false); // ADDITION: New state for edit modal
   const [currentEditingUserId, setCurrentEditingUserId] = useState(null); // ADDITION: New state to store ID of user being edited
   const [users, setUsers] = useState([]);
