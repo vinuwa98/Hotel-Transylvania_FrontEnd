@@ -178,10 +178,11 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.role)}
           required
           options={[
-            <DropdownOption key={0} label={"Select a role"} isDefault={true} />,
-            roles.map((role, index) => (
-              <DropdownOption key={index + 1} value={role} label={role} />
-            )),
+            { value: "", label: "Select a role" },
+            ...roles.map((role) => ({
+              value: role,
+              label: role,
+            })),
           ]}
           placeholder="Select Role"
         />
@@ -201,14 +202,11 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
               onBlur={formik.handleBlur}
               error={Boolean(formik.errors.supervisorID)}
               options={[
-                <DropdownOption key={0} value={""} label={"Select a supervisor"} />,
-                supervisors.map((s, index) => (
-                  <DropdownOption
-                    key={index}
-                    value={s.supervisorID}
-                    label={s.firstName + " " + s.lastName}
-                  />
-                )),
+                { value: "", label: "Select a supervisor" },
+                ...supervisors.map((s) => ({
+                  value: s.supervisorID,
+                  label: `${s.firstName} ${s.lastName}`,
+                })),
               ]}
               placeholder="Select Supervisor"
               required

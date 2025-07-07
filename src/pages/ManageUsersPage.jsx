@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../Components/organisms/Sidebar';
 import Header from '../Components/molecules/Header';
 import Button from '../Components/atoms/Button';
-import UserFormModal from '../Components/molecules/UserCreateForm';
+import UserCreateForm from '../Components/molecules/UserCreateForm';// MODIFICATION: Corrected import name from UserFormModal to UserCreateForm
+import UserEditForm from '../Components/organisms/UserEditForm';// MODIFICATION: Import UserEditForm
 import { themeColors } from '../Theme/colors';
 import Modal from '../Components/molecules/modal';
 import { Ban, ShieldCheck } from 'lucide-react';
@@ -12,31 +13,63 @@ import { fetchUsers, deactivateUser, activateUser, addUser } from '../services/u
 const ManageUsersPage = () => {
 
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
+  const [editUserModalOpen, setEditUserModalOpen] = useState(false); // ADDITION: New state for edit modal
+  const [currentEditingUserId, setCurrentEditingUserId] = useState(null); // ADDITION: New state to store ID of user being edited
   const [users, setUsers] = useState([]);
- 
-  // State for confirmation modal
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState('');
-  const [confirmAction, setConfirmAction] = useState(() => () => {});
-  const [confirmIcon, setConfirmIcon] = useState(null);
 
+  
+  // Function to load users - encapsulate to call it easily after updates
+  const loadUsers = async () => { // MODIFICATION: Encapsulated loadUsers inside a function
+    try {
+      const token = localStorage.getItem('token');
+      const usersData = await fetchUsers(token);
+      setUsers(usersData);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      // Optionally show a user-friendly error message
+    }
+  };
 
   useEffect(() => {
-    const loadUsers = async () => {
-      try 
-      {
-        const token = localStorage.getItem('token');
-        const usersData = await fetchUsers(token);
-        setUsers(usersData);
-      } 
-      catch (error) 
-      {
-        console.error('Error fetching users:', error);
-      }
-    };
-
     loadUsers();
-  }, []);
+  }, []); // Load users once on component mount
+
+  // Handle opening the Add User modal
+  const handleAddUserClick = () => {
+    setAddUserModalOpen(true);
+  };
+
+  // Handle closing the Add User modal
+  const handleCloseAddUserModal = () => {
+    setAddUserModalOpen(false);
+    loadUsers(); // Refresh user list after adding
+  };
+
+  // ADDITION: Handle opening the Edit User modal
+  const handleEditClick = (userId) => {
+    setCurrentEditingUserId(userId);
+    setEditUserModalOpen(true);
+  };
+
+  // ADDITION: Handle closing the Edit User modal
+  const handleCloseEditUserModal = () => {
+    setEditUserModalOpen(false);
+    setCurrentEditingUserId(null); // Clear the editing user ID
+    loadUsers(); // Refresh user list after editing
+  };
+
+  // ADDITION: Handle Add User submission from UserCreateForm (moved from being inline)
+  const handleAddUserSubmit = async ({ form, token }) => {
+    try {
+      await addUser(form, token); // Assuming addUser function exists in userService
+      alert("User added successfully!");
+      handleCloseAddUserModal(); // Close and refresh
+    } catch (error) {
+      console.error('Error adding user:', error);
+      alert("Failed to add user: " + (error.message || "Unknown error"));
+    }
+  };
+
 
   // Deactivate the users
   const handleDeactivate = async (userId, currentStatus) => {
@@ -115,9 +148,9 @@ const ManageUsersPage = () => {
         <Header />
 
         <div className="p-4">
-          <h2 className="text-2xl font-bold mb-4 text-center">Manage Users</h2>
-          <UserFormModal open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
-          <UserFormModal
+          <h2 className="text-4xl font-bold mb-4 text-center">Manage Users</h2>
+          <UserCreateForm open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
+          <UserCreateForm
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
             handleSubmit={async (data) => await addUser(data.form, data.token)}
@@ -176,6 +209,7 @@ const ManageUsersPage = () => {
                         <Button
                           label={'Edit'}
                           className="w-24"
+                          onClick={() => handleEditClick(user.id)} // <-- This is the important line!
                           style={{
                             backgroundColor: themeColors.Green,
                             color: themeColors.White,
@@ -222,6 +256,22 @@ const ManageUsersPage = () => {
           icon={confirmIcon}
         />
       </div>
+
+
+      {/* User Create Modal */}
+      <UserCreateForm
+        open={addUserModalOpen}
+        onClose={handleCloseAddUserModal}
+        handleSubmit={handleAddUserSubmit} // MODIFICATION: Pass the new handleAddUserSubmit
+      />
+
+      {/* ADDITION: User Edit Modal */}
+      <UserEditForm
+        open={editUserModalOpen}
+        onClose={handleCloseEditUserModal}
+        userId={currentEditingUserId} // Pass the ID of the user to edit
+        onUserUpdated={loadUsers} // Call loadUsers to refresh table after update
+      />
     </div>
   );
 };
