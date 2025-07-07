@@ -9,17 +9,18 @@ import { themeColors } from '../../Theme/colors';
  * - type: "button", "submit", etc. (default = "button")
  */
 function Button(props) {
-  const { label, onClick, type = "button", style, className } = props;
+  const { label, onClick, type = "button", style, className, disabled = false } = props;
 
   return (
     <button
-        type={type}
-        onClick={onClick}
-        style={style}
-        className={`w-28 px-4 py-2 rounded-md hover:opacity-90 transition ${className}`}>
-        {label}
-  </button>
-
+      type={type}
+      onClick={onClick}
+      style={style}
+      disabled={disabled}
+      className={`w-28 px-4 py-2 rounded-md hover:opacity-90 transition ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      {label}
+    </button>
   );
 }
 
