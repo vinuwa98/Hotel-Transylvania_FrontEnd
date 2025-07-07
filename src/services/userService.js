@@ -8,9 +8,7 @@ const addUser = async (userData, token) => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
-      if (res.status === 200) {
-        alert("User added successfully!");
-      }
+      return res;
     })
     .catch((err) => {
       alert(err.response.data);
@@ -33,36 +31,42 @@ export const getSupervisors = async (token) => {
 };
 
 // Sends a GET request to fetch all users
- const fetchUsers = async (token) => {
+const fetchUsers = async (token) => {
   const response = await axios.get(`${API_BASE_URL}/User/get-users`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
   return response.data;
-}; 
-
+};
 
 // Send a PUT request to deactivate user by their userId
 const deactivateUser = async (userId, token) => {
-  const response = await axios.put(`${API_BASE_URL}/User/deactivate-user`, userId, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await axios.put(
+    `${API_BASE_URL}/User/deactivate-user`,
+    userId,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
 
-
 // Send a PUT request to activate user by their userId
 const activateUser = async (userId, token) => {
-  const response = await axios.put(`${API_BASE_URL}/User/activate-user`, userId, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await axios.put(
+    `${API_BASE_URL}/User/activate-user`,
+    userId,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
 

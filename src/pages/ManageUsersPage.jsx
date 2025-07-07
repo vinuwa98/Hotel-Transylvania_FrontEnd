@@ -5,7 +5,7 @@ import Button from "../Components/atoms/Button";
 import UserFormModal from "../Components/molecules/UserCreateForm";
 import { themeColors } from "../Theme/colors";
 import Modal from "../Components/molecules/modal";
-import { Ban, ShieldCheck } from "lucide-react";
+import { Ban, ShieldCheck, XCircle, CheckCircle } from "lucide-react";
 import {
   fetchUsers,
   deactivateUser,
@@ -20,6 +20,7 @@ const ManageUsersPage = () => {
   // State for confirmation modal
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmMessageType, setConfirmMessageType] = useState("confirm");
   const [confirmAction, setConfirmAction] = useState(() => () => {});
   const [confirmIcon, setConfirmIcon] = useState(null);
 
@@ -36,6 +37,41 @@ const ManageUsersPage = () => {
 
     loadUsers();
   }, []);
+
+  // Add a new user with feedback
+  const handleSubmit = async (data) => {
+    try {
+      const response = await addUser(data.form, data.token);
+      setConfirmMessage("User added successfully!");
+      setConfirmIcon(
+        <div
+          className="w-16 h-16 flex items-center justify-center rounded-full shadow-lg"
+          style={{ backgroundColor: themeColors.Green }}
+        >
+          <CheckCircle
+            className="w-8 h-8"
+            style={{ color: themeColors.White }}
+          />
+        </div>
+      );
+      setConfirmMessageType("information");
+      setUsers(response.data);
+      setAddUserModalOpen(false);
+    } catch (error) {
+      setConfirmMessageType("confirm");
+      setConfirmMessage(`User not added: ${error.message}`);
+      setConfirmIcon(
+        <div
+          className="w-16 h-16 flex items-center justify-center rounded-full shadow-lg"
+          style={{ backgroundColor: themeColors.Red }}
+        >
+          <XCircle className="w-8 h-8" style={{ color: themeColors.White }} />
+        </div>
+      );
+    } finally {
+      setConfirmModalOpen(true);
+    }
+  };
 
   // Deactivate the users
   const handleDeactivate = async (userId, currentStatus) => {
@@ -109,20 +145,15 @@ const ManageUsersPage = () => {
 
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4 text-center">Manage Users</h2>
-          <UserFormModal
+          {/* <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
             onSubmit={() => {}}
-          />
+          /> */}
           <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
-            handleSubmit={(data) => {
-              addUser(data.form, data.token).then((res) => {
-                console.log(res);
-                setAddUserModalOpen(false);
-              });
-            }}
+            handleSubmit={handleSubmit}
           />
           <Button
             label={"Add New User"}
@@ -152,58 +183,63 @@ const ManageUsersPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => (
-                  <tr key={index} className={`text-center`}>
-                    <td className="px-6 py-4">{user.fullName}</td>
-                    <td className="px-6 py-4">{user.role}</td>
-                    <td className="px-6 py-4">{user.address}</td>
-                    <td className="px-6 py-4">{user.contactNumber}</td>
-                    <td className="px-6 py-4">
-                      <span
-                        style={{
-                          backgroundColor:
-                            user.status === "Active"
-                              ? themeColors.LightGreen
-                              : themeColors.LightRed,
-
-                          color:
-                            user.status === "Active"
-                              ? themeColors.Green
-                              : themeColors.Red,
-                        }}
-                        className={`px-4 py-2 rounded-lg text-12 font-medium`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex justify-center gap-3">
-                        <Button
-                          label={"Edit"}
-                          className="w-24"
-                          style={{
-                            backgroundColor: themeColors.Green,
-                            color: themeColors.White,
-                          }}
-                        />
-                        <Button
-                          label={
-                            user.status === "Active" ? "Deactivate" : "Activate"
-                          }
-                          className="w-24"
-                          onClick={() => handleDeactivate(user.id, user.status)}
+                {users.length !== 0 &&
+                  users.map((user, index) => (
+                    <tr key={index} className={`text-center`}>
+                      <td className="px-6 py-4">{user.fullName}</td>
+                      <td className="px-6 py-4">{user.role}</td>
+                      <td className="px-6 py-4">{user.address}</td>
+                      <td className="px-6 py-4">{user.contactNumber}</td>
+                      <td className="px-6 py-4">
+                        <span
                           style={{
                             backgroundColor:
                               user.status === "Active"
-                                ? themeColors.Red
-                                : themeColors.LightBlue,
-                            color: themeColors.White,
+                                ? themeColors.LightGreen
+                                : themeColors.LightRed,
+
+                            color:
+                              user.status === "Active"
+                                ? themeColors.Green
+                                : themeColors.Red,
                           }}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          className={`px-4 py-2 rounded-lg text-12 font-medium`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex justify-center gap-3">
+                          <Button
+                            label={"Edit"}
+                            className="w-24"
+                            style={{
+                              backgroundColor: themeColors.Green,
+                              color: themeColors.White,
+                            }}
+                          />
+                          <Button
+                            label={
+                              user.status === "Active"
+                                ? "Deactivate"
+                                : "Activate"
+                            }
+                            className="w-24"
+                            onClick={() =>
+                              handleDeactivate(user.id, user.status)
+                            }
+                            style={{
+                              backgroundColor:
+                                user.status === "Active"
+                                  ? themeColors.Red
+                                  : themeColors.LightBlue,
+                              color: themeColors.White,
+                            }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 {users.length === 0 && (
                   <tr>
                     <td
@@ -227,6 +263,7 @@ const ManageUsersPage = () => {
           onConfirm={confirmAction}
           message={confirmMessage}
           icon={confirmIcon}
+          messageType={confirmMessageType}
         />
       </div>
     </div>
