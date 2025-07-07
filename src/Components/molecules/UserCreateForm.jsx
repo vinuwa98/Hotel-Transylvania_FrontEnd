@@ -61,7 +61,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
 
   useEffect(() => {
     getSupervisors(localStorage.getItem("token")).then((data) =>
-      setSupervisors(data.data)
+      setSupervisors(data)
     );
   }, []);
 
@@ -203,10 +203,10 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
               error={Boolean(formik.errors.supervisorID)}
               options={[
                 { value: "", label: "Select a supervisor" },
-                ...supervisors.map((s) => ({
+                ...(supervisors?.map((s) => ({
                   value: s.supervisorID,
                   label: `${s.firstName} ${s.lastName}`,
-                })),
+                })) || []),
               ]}
               placeholder="Select Supervisor"
               required
