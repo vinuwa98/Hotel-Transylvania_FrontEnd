@@ -16,7 +16,7 @@ function Button(props) {
         type={type}
         onClick={onClick}
         style={style}
-        className={`px-4 py-2 rounded-md hover:opacity-90 transition ${className}`}>
+        className={`w-28 px-4 py-2 rounded-md hover:opacity-90 transition ${className}`}>
         {label}
   </button>
 
