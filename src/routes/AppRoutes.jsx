@@ -6,6 +6,7 @@ import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import ManageUsersPage from "../pages/ManageUsersPage";
 import ResetPassword from "../pages/ResetPasswordPage";
+import { AuthProvider } from "../contexts/AuthContext";
 
 /**
  * AppRoutes handles routing for the app.
@@ -19,7 +20,6 @@ function AppRoutes() {
 
         {/* ✅ Dashboard Route (shows after successful login) */}
         <Route path="/dashboard" element={<DashboardPage />} />
-
         <Route path="/manage-user" element={<ManageUsersPage />} />
         <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>

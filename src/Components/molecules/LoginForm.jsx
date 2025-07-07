@@ -1,38 +1,42 @@
-import React, { useState } from 'react';
-import Input from '../atoms/Input';
-import Button from '../atoms/Button';
-import { themeColors } from '../../Theme/colors';
-import authService from '../../services/authService'; // fake login service for now
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
+import { themeColors } from "../../Theme/colors";
+import authService from "../../services/authService"; // fake login service for now
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function LoginForm() {
   // Input field states
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   // Extra states for UI
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate(); // For page redirection
 
+  const auth = useAuth();
+
   // Handle login logic
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent form refresh
-    setLoading(true);   // Show loading state
-    setError('');       // Clear previous errors
+    setLoading(true); // Show loading state
+    setError(""); // Clear previous errors
 
     try {
       const user = await authService.login({ email, password });
 
       // Optionally store token or user info
-      localStorage.setItem('token', user.data.token);
-      localStorage.setItem('name', user.data.name);
+      localStorage.setItem("token", user.data.token);
+      localStorage.setItem("name", user.data.name);
+      auth.setActiveUser(user.data);
 
       // ✅ Redirect to dashboard
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError('Invalid email or password');
+      setError("Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -63,9 +67,12 @@ function LoginForm() {
 
       {/* Button */}
       <Button
-        label={loading ? 'Logging in...' : 'Login'}
+        label={loading ? "Logging in..." : "Login"}
         type="submit"
-        style={{backgroundColor: themeColors.Blue3rd, color: themeColors.White}}
+        style={{
+          backgroundColor: themeColors.Blue3rd,
+          color: themeColors.White,
+        }}
         className="w-full"
         disabled={loading}
       />

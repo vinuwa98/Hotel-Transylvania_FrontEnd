@@ -1,6 +1,6 @@
-import React from 'react';
-import AppRoutes from './routes/AppRoutes';
-import './index.css'; // This imports your global styles, including Tailwind CSS setup.
+import React from "react";
+import AppRoutes from "./routes/AppRoutes";
+import "./index.css"; // This imports your global styles, including Tailwind CSS setup.
 
 /**
  * App component — this is the root of your frontend.
@@ -10,7 +10,6 @@ function App() {
   return (
     <div className="App">
       <AppRoutes />
-        
     </div>
   );
 }
