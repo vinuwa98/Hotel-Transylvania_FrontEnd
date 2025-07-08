@@ -1,69 +1,47 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../Components/organisms/Sidebar';
-import Header from '../Components/molecules/Header';
-import Button from '../Components/atoms/Button';
-import UserCreateForm from '../Components/molecules/UserCreateForm';// MODIFICATION: Corrected import name from UserFormModal to UserCreateForm
-import UserEditForm from '../Components/organisms/UserEditForm';// MODIFICATION: Import UserEditForm
-import { themeColors } from '../Theme/colors';
-import Modal from '../Components/molecules/modal';
-import { Ban, ShieldCheck } from 'lucide-react';
-import { fetchUsers, deactivateUser, activateUser, addUser } from '../services/userService';
-
-
-
-
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/organisms/Sidebar";
 import Header from "../Components/molecules/Header";
 import Button from "../Components/atoms/Button";
-import UserFormModal from "../Components/molecules/UserCreateForm";
+import UserCreateForm from "../Components/molecules/UserCreateForm"; // MODIFICATION: Corrected import name from UserFormModal to UserCreateForm
+import UserEditForm from "../Components/organisms/UserEditForm"; // MODIFICATION: Import UserEditForm
 import { themeColors } from "../Theme/colors";
 import Modal from "../Components/molecules/modal";
-import { Ban, ShieldCheck, XCircle, CheckCircle } from "lucide-react";
 import {
   fetchUsers,
   deactivateUser,
   activateUser,
   addUser,
 } from "../services/userService";
+import UserFormModal from "../Components/molecules/UserCreateForm";
+import { Ban, ShieldCheck, XCircle, CheckCircle } from "lucide-react";
 
 const ManageUsersPage = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null); // MODIFICATION: Changed to use state for confirmAction
-const [confirmMessage, setConfirmMessage] = useState(""); // Optional but also needed
-const [confirmIcon, setConfirmIcon] = useState(null);     // Optional for icon
+  const [confirmMessage, setConfirmMessage] = useState(""); // Optional but also needed
+  const [confirmIcon, setConfirmIcon] = useState(null); // Optional for icon
   const [editUserModalOpen, setEditUserModalOpen] = useState(false); // ADDITION: New state for edit modal
   const [currentEditingUserId, setCurrentEditingUserId] = useState(null); // ADDITION: New state to store ID of user being edited
   const [users, setUsers] = useState([]);
- 
-  // State for confirmation modal
-  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-  const [confirmMessage, setConfirmMessage] = useState('');
-  const [confirmAction, setConfirmAction] = useState(() => () => {});
-  const [confirmIcon, setConfirmIcon] = useState(null);
+  const [confirmMessageType, setConfirmMessageType] = useState("confirm");
 
-
-  useEffect(() => {
-    const loadUsers = async () => {
-      try 
-      {
-        const token = localStorage.getItem('token');
-        const usersData = await fetchUsers(token);
-        setUsers(usersData);
-      } 
-      catch (error) 
-      {
-        console.error('Error fetching users:', error);
-      }
-    };
+  const loadUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const usersData = await fetchUsers(token);
+      setUsers(usersData);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
   useEffect(() => {
     loadUsers();
   }, []);
 
   // Add a new user with feedback
-  const handleSubmit = async (data) => {
+  const handleAddUserSubmit = async (data) => {
     try {
       const response = await addUser(data.form, data.token);
       setConfirmMessage("User added successfully!");
@@ -95,6 +73,30 @@ const [confirmIcon, setConfirmIcon] = useState(null);     // Optional for icon
     } finally {
       setConfirmModalOpen(true);
     }
+  };
+
+  // Handle opening the Add User modal
+  const handleAddUserClick = () => {
+    setAddUserModalOpen(true);
+  };
+
+  // Handle closing the Add User modal
+  const handleCloseAddUserModal = () => {
+    setAddUserModalOpen(false);
+    loadUsers(); // Refresh user list after adding
+  };
+
+  // ADDITION: Handle opening the Edit User modal
+  const handleEditClick = (userId) => {
+    setCurrentEditingUserId(userId);
+    setEditUserModalOpen(true);
+  };
+
+  // ADDITION: Handle closing the Edit User modal
+  const handleCloseEditUserModal = () => {
+    setEditUserModalOpen(false);
+    setCurrentEditingUserId(null); // Clear the editing user ID
+    loadUsers(); // Refresh user list after editing
   };
 
   // Deactivate the users
@@ -177,7 +179,7 @@ const [confirmIcon, setConfirmIcon] = useState(null);     // Optional for icon
           <UserFormModal
             open={addUserModalOpen}
             onClose={() => setAddUserModalOpen(false)}
-            handleSubmit={handleSubmit}
+            handleSubmit={handleAddUserSubmit}
           />
           <Button
             label={"Add New User"}
@@ -291,13 +293,12 @@ const [confirmIcon, setConfirmIcon] = useState(null);     // Optional for icon
         />
       </div>
 
-
       {/* User Create Modal */}
-      <UserCreateForm
+      {/* <UserCreateForm
         open={addUserModalOpen}
         onClose={handleCloseAddUserModal}
         handleSubmit={handleAddUserSubmit} // MODIFICATION: Pass the new handleAddUserSubmit
-      />
+      /> */}
 
       {/* ADDITION: User Edit Modal */}
       <UserEditForm

@@ -14,6 +14,7 @@ import { DropdownOptionWithTitle } from "../atoms/DropdownOptionWithTitle";
 const UserForm = ({ open, onClose, handleSubmit }) => {
   const [selectedRole, setSelectedRole] = useState("");
   const [supervisors, setSupervisors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -28,8 +29,16 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
       password: "",
     },
     validationSchema: userSchema,
-    onSubmit: (values) => {
-      handleSubmit({ form: values, token: localStorage.getItem("token") });
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        await handleSubmit({
+          form: values,
+          token: localStorage.getItem("token"),
+        });
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -262,9 +271,9 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           <Button
             type="submit"
             variant="contained"
-            disabled={!formik.isValid || !formik.dirty}
+            disabled={!formik.isValid || !formik.dirty || loading}
           >
-            Add
+            {loading ? "Adding..." : "Add"}
           </Button>
         </Box>
       </Box>

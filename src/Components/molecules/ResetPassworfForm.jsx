@@ -3,7 +3,7 @@ import Input from "../atoms/Input";
 import Button from "../atoms/Button";
 import { themeColors } from "../../Theme/colors";
 import authService from "../../services/authService";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function ResetPasswordForm() {
   const [searchParams] = useSearchParams();
@@ -15,6 +15,8 @@ function ResetPasswordForm() {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleReset = async (e) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ function ResetPasswordForm() {
         newPassword: password,
       });
       setMessage("Password reset successful! You can now log in.");
+      navigate("/");
     } catch (err) {
       setError(err.message || "Error resetting password");
     } finally {

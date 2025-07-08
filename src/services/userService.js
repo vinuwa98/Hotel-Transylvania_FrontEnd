@@ -17,7 +17,6 @@ const addUser = async (userData, token) => {
 
     // If the request is successful
     if (response.status === 200) {
-      alert("User added successfully!");
       return response.data;
     }
   } catch (err) {
