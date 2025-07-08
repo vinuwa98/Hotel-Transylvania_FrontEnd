@@ -10,8 +10,6 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  console.log(auth);
-
   const handleClickDashboard = () => {
     navigate("/dashboard");
   };
