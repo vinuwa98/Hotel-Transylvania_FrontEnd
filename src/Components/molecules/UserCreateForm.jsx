@@ -9,10 +9,13 @@ import { useFormik } from "formik";
 import userSchema from "../../schemas/userSchema";
 import { getSupervisors } from "../../services/userService";
 import { DropdownOption } from "../atoms/DropDownOption";
+import { DropdownOptionWithTitle } from "../atoms/DropdownOptionWithTitle";
+import ItemDropdownList from "../atoms/ItemDropdownList";
 
 const UserForm = ({ open, onClose, handleSubmit }) => {
   const [selectedRole, setSelectedRole] = useState("");
   const [supervisors, setSupervisors] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -27,8 +30,16 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
       password: "",
     },
     validationSchema: userSchema,
-    onSubmit: (values) => {
-      handleSubmit({ form: values, token: localStorage.getItem("token") });
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        await handleSubmit({
+          form: values,
+          token: localStorage.getItem("token"),
+        });
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -74,12 +85,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
   return (
     <Modal sx={modalStyles} open={open} onClose={onClose}>
       <Box sx={formStyles} component="form" onSubmit={formik.handleSubmit}>
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          align="center"
-          mb={3}
-        >
+        <Typography variant="h5" fontWeight="bold" align="center" mb={3}>
           Add User
         </Typography>
 
@@ -167,7 +173,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
         )}
 
         <FieldTitle>Role</FieldTitle>
-        <DropdownList
+        <ItemDropdownList
           name="role"
           value={formik.values.role}
           onChange={(e) => {
@@ -178,11 +184,10 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.role)}
           required
           options={[
-            { value: "", label: "Select a role" },
-            ...roles.map((role) => ({
-              value: role,
-              label: role,
-            })),
+            <DropdownOption key={0} label={"Select a role"} isDefault={true} />,
+            roles.map((role, index) => (
+              <DropdownOption key={index + 1} value={role} label={role} />
+            )),
           ]}
           placeholder="Select Role"
         />
@@ -195,18 +200,27 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
         {selectedRole === "Cleaner" && (
           <>
             <FieldTitle>Supervisor</FieldTitle>
-            <DropdownList
+            <ItemDropdownList
               name="supervisorID"
               value={formik.values.supervisorID}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={Boolean(formik.errors.supervisorID)}
               options={[
-                { value: "", label: "Select a supervisor" },
-                ...(supervisors?.map((s) => ({
-                  value: s.supervisorID,
-                  label: `${s.firstName} ${s.lastName}`,
-                })) || []),
+                <DropdownOptionWithTitle
+                  key={0}
+                  value={""}
+                  title={"Select a supervisor"}
+                  isDefault={true}
+                />,
+                supervisors.map((s, index) => (
+                  <DropdownOptionWithTitle
+                    key={index + 1}
+                    value={s.supervisorId}
+                    title={s.firstName + " " + s.lastName}
+                    subtitle={s.supervisorId}
+                  />
+                )),
               ]}
               placeholder="Select Supervisor"
               required
@@ -257,9 +271,9 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           <Button
             type="submit"
             variant="contained"
-            disabled={!formik.isValid || !formik.dirty}
+            disabled={!formik.isValid || !formik.dirty || loading}
           >
-            Add
+            {loading ? "Adding..." : "Add"}
           </Button>
         </Box>
       </Box>

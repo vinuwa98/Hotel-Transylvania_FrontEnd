@@ -1,11 +1,12 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Page imports
-import LoginPage from '../pages/LoginPage';
-import DashboardPage from '../pages/DashboardPage';
-import ManageUsersPage from '../pages/ManageUsersPage';
-import MainLayout from '../Components/Template/MainLayout';
+import LoginPage from "../pages/LoginPage";
+import DashboardPage from "../pages/DashboardPage";
+import ManageUsersPage from "../pages/ManageUsersPage";
+import ResetPassword from "../pages/ResetPasswordPage";
+import MainLayout from "../Components/Template/MainLayout";
 
 /**
  * AppRoutes handles routing for the app.
@@ -16,9 +17,8 @@ function AppRoutes() {
       <Routes>
         {/* Login Page Route */}
         <Route path="/" element={<LoginPage />} />
-
+        <Route path="/reset-password" element={<ResetPassword />} />
         {/* Dashboard Route (shows after successful login) */}
-
         <Route element={<MainLayout />}>
           {/* Nested routes under MainLayout */}
           <Route path="dashboard" element={<DashboardPage />} />

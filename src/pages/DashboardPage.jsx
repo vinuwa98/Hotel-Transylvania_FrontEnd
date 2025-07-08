@@ -1,11 +1,11 @@
-import React from 'react';
-import DashboardCards from '../Components/organisms/DashboardCards';
+import React from "react";
+import DashboardCards from "../Components/organisms/DashboardCards";
 
 const DashboardPage = () => {
   return (
-      <div>
-        <DashboardCards />
-      </div>
+    <div>
+      <DashboardCards />
+    </div>
   );
 };
 

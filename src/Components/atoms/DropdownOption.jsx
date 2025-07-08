@@ -1,11 +1,11 @@
-export const DropdownOption = ({ key, value, label, isDefault }) => (
+export const DropdownOption = ({ value, label, isDefault }) => (
   <>
     {isDefault ? (
-      <option key={key} value={value} selected>
+      <option value={value} defaultValue>
         {label}
       </option>
     ) : (
-      <option key={key} value={value}>{label}</option>
+      <option value={value}>{label}</option>
     )}
   </>
 );

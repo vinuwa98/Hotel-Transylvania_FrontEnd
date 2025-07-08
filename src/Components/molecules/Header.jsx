@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { themeColors } from '../../Theme/colors';
-import userImage from '../../assets/user.png';
-import { getLoggedUser } from '../../services/userService';
+import React from "react";
+import { themeColors } from "../../Theme/colors";
+import userImage from "../../assets/user.png";
+import { useAuth } from "../../contexts/AuthContext";
 
-const Header = () => {
-  const [fullName, setFullName] = useState('');
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-
-        const response = await getLoggedUser(token);
-        setFullName(response.fullName);
-      } catch (error) {
-        console.error('Error fetching logged user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+const Header = ({ title }) => {
+  const auth = useAuth();
 
   return (
     <header
@@ -28,10 +12,17 @@ const Header = () => {
       style={{ backgroundColor: themeColors.White }}
     >
       <div className="flex items-center gap-x-3 ml-auto">
-        <h2 className="text-sm font-medium text-right" style={{ color: themeColors.DarkBlue }}>
-          {fullName ? `Welcome, ${fullName}` : 'Loading...'}
-        </h2>
-        <img src={userImage} alt="user" className="h-10 w-10 rounded-full object-cover" />
+        <div className="text-right">
+          <div className="text-base font-semibold text-gray-800">
+            {`${auth.activeUser.firstName} ${auth.activeUser.lastName}`}
+          </div>
+          <div className="text-sm text-gray-500">{auth.role}</div>
+        </div>
+        <img
+          src={userImage}
+          alt="user"
+          className="h-10 w-10 rounded-full object-cover"
+        />
       </div>
     </header>
   );
