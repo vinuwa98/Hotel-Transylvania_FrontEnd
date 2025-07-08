@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../Components/organisms/Sidebar';
-import Header from '../Components/molecules/Header';
 import Button from '../Components/atoms/Button';
 import UserFormModal from '../Components/molecules/UserCreateForm';
 import { themeColors } from '../Theme/colors';
@@ -110,10 +108,9 @@ const ManageUsersPage = () => {
 
   return (
     <div className="flex h-screen" style={{ backgroundColor: themeColors.Gray }}>
-      <Sidebar />
+     
       <div className="flex flex-col flex-1">
-        <Header />
-
+      
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4 text-center">Manage Users</h2>
           <UserFormModal open={addUserModalOpen} onClose={() => setAddUserModalOpen(false)} onSubmit={() => {}} />
