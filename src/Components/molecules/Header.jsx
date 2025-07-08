@@ -1,6 +1,6 @@
 import React from "react";
 import { themeColors } from "../../Theme/colors";
-import user from "../../assets/user.png";
+import userImage from "../../assets/user.png";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Header = ({ title }) => {
@@ -19,7 +19,7 @@ const Header = ({ title }) => {
           <div className="text-sm text-gray-500">{auth.role}</div>
         </div>
         <img
-          src={user}
+          src={userImage}
           alt="user"
           className="h-10 w-10 rounded-full object-cover"
         />

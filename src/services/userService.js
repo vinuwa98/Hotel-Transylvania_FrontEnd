@@ -127,6 +127,20 @@ const activateUser = async (userId, token) => {
   return response.data;
 };
 
+
+//const API_BASE_URL = "https://localhost:7172/api";
+
+const getLoggedUser = async (token) => {
+  const response = await axios.get(`${API_BASE_URL}/User/get-logged-user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export { getLoggedUser };
+ 
 export { activateUser };
 export { deactivateUser };
 export { fetchUsers };

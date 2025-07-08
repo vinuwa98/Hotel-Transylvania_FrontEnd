@@ -165,22 +165,9 @@ const ManageUsersPage = () => {
       className="flex h-screen"
       style={{ backgroundColor: themeColors.Gray }}
     >
-      <Sidebar />
       <div className="flex flex-col flex-1">
-        <Header />
-
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4 text-center">Manage Users</h2>
-          {/* <UserFormModal
-            open={addUserModalOpen}
-            onClose={() => setAddUserModalOpen(false)}
-            onSubmit={() => {}}
-          /> */}
-          <UserFormModal
-            open={addUserModalOpen}
-            onClose={() => setAddUserModalOpen(false)}
-            handleSubmit={handleAddUserSubmit}
-          />
           <Button
             label={"Add New User"}
             onClick={() => setAddUserModalOpen(true)}
@@ -239,6 +226,7 @@ const ManageUsersPage = () => {
                           <Button
                             label={"Edit"}
                             className="w-24"
+                            onClick={() => handleEditClick(user.id)} // <-- This is the important line!
                             style={{
                               backgroundColor: themeColors.Green,
                               color: themeColors.White,
@@ -299,6 +287,11 @@ const ManageUsersPage = () => {
         onClose={handleCloseAddUserModal}
         handleSubmit={handleAddUserSubmit} // MODIFICATION: Pass the new handleAddUserSubmit
       /> */}
+      <UserFormModal
+        open={addUserModalOpen}
+        onClose={() => setAddUserModalOpen(false)}
+        handleSubmit={handleAddUserSubmit}
+      />
 
       {/* ADDITION: User Edit Modal */}
       <UserEditForm
