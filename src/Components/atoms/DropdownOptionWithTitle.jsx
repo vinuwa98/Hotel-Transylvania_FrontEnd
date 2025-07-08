@@ -23,7 +23,7 @@ export const DropdownOptionWithTitle = ({
             <div style={{ fontWeight: "bold" }}>{title}</div>
           </div>
           <div>
-            <div style={{ fontSize: 12, color: "#666" }}>{subtitle}</div>
+            (<div style={{ fontSize: 12, color: "#666" }}>{subtitle}</div>)
           </div>
         </option>
       </div>

@@ -10,6 +10,7 @@ import userSchema from "../../schemas/userSchema";
 import { getSupervisors } from "../../services/userService";
 import { DropdownOption } from "../atoms/DropDownOption";
 import { DropdownOptionWithTitle } from "../atoms/DropdownOptionWithTitle";
+import ItemDropdownList from "../atoms/ItemDropdownList";
 
 const UserForm = ({ open, onClose, handleSubmit }) => {
   const [selectedRole, setSelectedRole] = useState("");
@@ -172,7 +173,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
         )}
 
         <FieldTitle>Role</FieldTitle>
-        <DropdownList
+        <ItemDropdownList
           name="role"
           value={formik.values.role}
           onChange={(e) => {
@@ -183,11 +184,10 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.role)}
           required
           options={[
-            { value: "", label: "Select a role" },
-            ...roles.map((role) => ({
-              value: role,
-              label: role,
-            })),
+            <DropdownOption key={0} label={"Select a role"} isDefault={true} />,
+            roles.map((role, index) => (
+              <DropdownOption key={index + 1} value={role} label={role} />
+            )),
           ]}
           placeholder="Select Role"
         />
@@ -200,7 +200,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
         {selectedRole === "Cleaner" && (
           <>
             <FieldTitle>Supervisor</FieldTitle>
-            <DropdownList
+            <ItemDropdownList
               name="supervisorID"
               value={formik.values.supervisorID}
               onChange={formik.handleChange}
