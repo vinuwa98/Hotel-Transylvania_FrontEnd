@@ -17,7 +17,7 @@ const addUser = async (userData, token) => {
     
     console.error("Add user error:", err);
     alert(err?.response?.data || "Something went wrong while adding the user.");
-    return null; // 🔥 This prevents `.data` crash
+    return null; //This prevents `.data` crash
   }
 };
 
