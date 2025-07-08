@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,9 +7,12 @@ import Input from "../atoms/Input";
 import DropdownList from "../atoms/DropdownList";
 import { useFormik } from "formik";
 import userSchema from "../../schemas/userSchema";
+import { getSupervisors } from "../../services/userService";
+import { DropdownOption } from "../atoms/DropDownOption";
 
 const UserForm = ({ open, onClose, handleSubmit }) => {
   const [selectedRole, setSelectedRole] = useState("");
+  const [supervisors, setSupervisors] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +28,6 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
     },
     validationSchema: userSchema,
     onSubmit: (values) => {
-      console.log("Form submitted:", values);
       handleSubmit({ form: values, token: localStorage.getItem("token") });
     },
   });
@@ -57,13 +59,31 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
     gap: 2,
   };
 
+  useEffect(() => {
+    getSupervisors(localStorage.getItem("token")).then((data) =>
+      setSupervisors(data)
+    );
+  }, []);
+
+  const FieldTitle = ({ children }) => (
+    <Typography variant="subtitle2" fontWeight="bold">
+      {children}
+    </Typography>
+  );
+
   return (
     <Modal sx={modalStyles} open={open} onClose={onClose}>
       <Box sx={formStyles} component="form" onSubmit={formik.handleSubmit}>
-        <Typography variant="h6" mb={2}>
+        <Typography
+          variant="h5"
+          fontWeight="bold"
+          align="center"
+          mb={3}
+        >
           Add User
         </Typography>
 
+        <FieldTitle>Email</FieldTitle>
         <Input
           type="email"
           name="email"
@@ -75,11 +95,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           required
         />
         {formik.errors.email && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.email}
           </Typography>
         )}
 
+        <FieldTitle>First Name</FieldTitle>
         <Input
           type="text"
           name="firstName"
@@ -91,11 +112,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           required
         />
         {formik.errors.firstName && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.firstName}
           </Typography>
         )}
 
+        <FieldTitle>Last Name</FieldTitle>
         <Input
           type="text"
           name="lastName"
@@ -106,11 +128,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.lastName)}
         />
         {formik.errors.lastName && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.lastName}
           </Typography>
         )}
 
+        <FieldTitle>Date of Birth</FieldTitle>
         <Input
           type="date"
           name="dob"
@@ -121,11 +144,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.dob)}
         />
         {formik.errors.dob && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.dob}
           </Typography>
         )}
 
+        <FieldTitle>Address</FieldTitle>
         <Input
           type="text"
           name="address"
@@ -137,11 +161,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           required
         />
         {formik.errors.address && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.address}
           </Typography>
         )}
 
+        <FieldTitle>Role</FieldTitle>
         <DropdownList
           name="role"
           value={formik.values.role}
@@ -152,34 +177,49 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           onBlur={formik.handleBlur}
           error={Boolean(formik.errors.role)}
           required
-          options={roles}
+          options={[
+            { value: "", label: "Select a role" },
+            ...roles.map((role) => ({
+              value: role,
+              label: role,
+            })),
+          ]}
           placeholder="Select Role"
         />
         {formik.errors.role && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.role}
           </Typography>
         )}
 
         {selectedRole === "Cleaner" && (
           <>
-            <Input
-              type="text"
+            <FieldTitle>Supervisor</FieldTitle>
+            <DropdownList
               name="supervisorID"
-              placeholder="Supervisor ID (e.g., SUP123456)"
               value={formik.values.supervisorID}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={Boolean(formik.errors.supervisorID)}
+              options={[
+                { value: "", label: "Select a supervisor" },
+                ...(supervisors?.map((s) => ({
+                  value: s.supervisorID,
+                  label: `${s.firstName} ${s.lastName}`,
+                })) || []),
+              ]}
+              placeholder="Select Supervisor"
+              required
             />
             {formik.errors.supervisorID && (
-              <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+              <Typography variant="body2" color="error">
                 {formik.errors.supervisorID}
               </Typography>
             )}
           </>
         )}
 
+        <FieldTitle>Contact Number</FieldTitle>
         <Input
           type="text"
           name="contactNumber"
@@ -190,11 +230,12 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.contactNumber)}
         />
         {formik.errors.contactNumber && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.contactNumber}
           </Typography>
         )}
 
+        <FieldTitle>Password</FieldTitle>
         <Input
           type="password"
           name="password"
@@ -206,7 +247,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           required
         />
         {formik.errors.password && (
-          <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
+          <Typography variant="body2" color="error">
             {formik.errors.password}
           </Typography>
         )}
