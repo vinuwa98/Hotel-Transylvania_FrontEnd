@@ -62,7 +62,7 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
 
   useEffect(() => {
     getSupervisors(localStorage.getItem("token")).then((data) =>
-      setSupervisors(data.data)
+      setSupervisors(data)
     );
   }, []);
 
@@ -174,10 +174,11 @@ const UserForm = ({ open, onClose, handleSubmit }) => {
           error={Boolean(formik.errors.role)}
           required
           options={[
-            <DropdownOption key={0} label={"Select a role"} isDefault={true} />,
-            roles.map((role, index) => (
-              <DropdownOption key={index + 1} value={role} label={role} />
-            )),
+            { value: "", label: "Select a role" },
+            ...roles.map((role) => ({
+              value: role,
+              label: role,
+            })),
           ]}
           placeholder="Select Role"
         />
