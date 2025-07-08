@@ -12,7 +12,6 @@ import {
   activateUser,
   addUser,
 } from "../services/userService";
-import { useAuth } from "../contexts/AuthContext";
 
 const ManageUsersPage = () => {
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
@@ -24,8 +23,6 @@ const ManageUsersPage = () => {
   const [confirmMessageType, setConfirmMessageType] = useState("confirm");
   const [confirmAction, setConfirmAction] = useState(() => () => {});
   const [confirmIcon, setConfirmIcon] = useState(null);
-
-  const auth = useAuth();
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -144,7 +141,7 @@ const ManageUsersPage = () => {
     >
       <Sidebar />
       <div className="flex flex-col flex-1">
-        <Header activeUser={auth.activeUser} />
+        <Header />
 
         <div className="p-4">
           <h2 className="text-2xl font-bold mb-4 text-center">Manage Users</h2>

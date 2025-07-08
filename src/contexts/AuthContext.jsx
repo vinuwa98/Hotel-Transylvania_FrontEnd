@@ -10,8 +10,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const roleFromToken = getRoleFromToken(token);
+    console.log(token, " ", roleFromToken);
     setRole(roleFromToken);
-  }, []);
+  }, [activeUser]);
 
   return (
     <AuthContext.Provider value={{ role, activeUser, setActiveUser }}>

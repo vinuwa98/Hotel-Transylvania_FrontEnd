@@ -10,6 +10,8 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
+  console.log(auth);
+
   const handleClickDashboard = () => {
     navigate("/dashboard");
   };
@@ -51,7 +53,7 @@ const Sidebar = () => {
           <LayoutDashboard />
           <span>Dashboard</span>
         </a>
-        {auth.role === "Admin" && (
+        {auth.role === "Admin" ? (
           <a
             // href="/manage-user"
             onClick={handleClickManageUser}
@@ -61,6 +63,8 @@ const Sidebar = () => {
             <UserRoundPen />
             <span>Manage Users</span>
           </a>
+        ) : (
+          <></>
         )}
       </nav>
 
