@@ -1,9 +1,16 @@
-function SupervisorSection() {
+import React from "react";
+import Sidebar from "./Sidebar";
+import Header from "../molecules/Header";
+import SupervisorComplaintTable from "./SupervisorComplaintTable";
+
+const SupervisorSection = () => {
   return (
-    <div>
-      <h1>Supervisor Section</h1>
+    <div className="flex">
+      <div className="flex-1">  
+        <SupervisorComplaintTable />
+      </div>
     </div>
   );
-}
+};
 
 export default SupervisorSection;
