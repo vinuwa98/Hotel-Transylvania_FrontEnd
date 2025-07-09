@@ -5,20 +5,11 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState("");
-  const [activeUser, setActiveUser] = useState(null);
-
-  console.log("auth reloaded");
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const roleFromToken = getRoleFromToken(token);
-    setRole(roleFromToken);
-
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [activeUser, setActiveUser] = useState(() => {
     const storedUser = localStorage.getItem("activeUser");
-    if (storedUser) {
-      setActiveUser(JSON.parse(storedUser));
-    }
-  }, [activeUser]);
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   useEffect(() => {
     if (activeUser) {
@@ -26,10 +17,18 @@ export const AuthProvider = ({ children }) => {
     } else {
       localStorage.removeItem("activeUser");
     }
-  }, []);
+  }, [activeUser]);
+
+  useEffect(() => {
+    localStorage.setItem("token", token);
+    const roleFromToken = getRoleFromToken(token);
+    setRole(roleFromToken);
+  }, [token]);
 
   return (
-    <AuthContext.Provider value={{ role, activeUser, setActiveUser }}>
+    <AuthContext.Provider
+      value={{ role, token, setToken, activeUser, setActiveUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -5,7 +5,6 @@ import { themeColors } from "../../Theme/colors";
 import authService from "../../services/authService"; // fake login service for now
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { getRoleFromToken } from "../../utils/jwtHelper";
 
 function LoginForm() {
   // Input field states
@@ -33,6 +32,7 @@ function LoginForm() {
       localStorage.setItem("token", user.data.token);
       localStorage.setItem("name", user.data.name);
       auth.setActiveUser(user.data);
+      auth.setToken(user.data.token);
 
       // ✅ Redirect to dashboard
       navigate("/dashboard");
