@@ -1,21 +1,30 @@
-// src/pages/DashboardPage.jsx
-import React from 'react';
-import Sidebar from '../Components/organisms/Sidebar';
-import Header from '../Components/molecules/Header';
-import DashboardCards from '../Components/organisms/DashboardCards';
+import React from "react";
+import DashboardCards from "../Components/organisms/DashboardCards";
+import { useAuth } from "../contexts/AuthContext";
+import SupervisorSection from "../Components/organisms/SupervisorSection";
+import MaintenanceStaffSection from "../Components/organisms/MaintenanceStaffSection";
+import MaintenanceManagerSection from "../Components/organisms/MaintenanceManagerSection";
+import HelpDeskSection from "../Components/organisms/HelpDeskSection";
+
+const RenderDashboard = (role) => {
+  switch (role) {
+    case "Admin":
+      return <DashboardCards />;
+    case "Supervisor":
+      return <SupervisorSection />;
+    case "MaintenanceStaff":
+      return <MaintenanceStaffSection />;
+    case "MaintenanceManager":
+      return <MaintenanceManagerSection />;
+    case "HelpDesk":
+      return <HelpDeskSection />;
+  }
+};
 
 const DashboardPage = () => {
-  return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex flex-col flex-1">
-        <Header/>
-        <main className="p-6">
-          <DashboardCards />
-        </main>
-      </div>
-    </div>
-  );
+  const auth = useAuth();
+
+  return <div>{RenderDashboard(auth.role)}</div>;
 };
 
 export default DashboardPage;
