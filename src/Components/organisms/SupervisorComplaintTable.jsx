@@ -14,6 +14,7 @@ const SupervisorComplaintTable = () => {
       try {
         if (!activeUser || !activeUser.userId || !activeUser.token) {
           console.warn("Active user or token not loaded yet");
+          console.log("Logged-in supervisor ID:", activeUser.userId);
           return;
         }
 

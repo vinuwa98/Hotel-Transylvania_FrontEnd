@@ -10,6 +10,7 @@ import {
   LogOut,
   ClipboardListIcon,
   BedDoubleIcon,
+  UserCheck,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -118,6 +119,32 @@ const Sidebar = () => {
           >
             <ClipboardListIcon />
             <span>Jobs</span>
+          </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "Supervisor" ? (
+          <a
+            onClick={handleClickViewComplaints}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <UserCheck />
+            <span>Assign Cleaners</span>
+          </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "Supervisor" ? (
+          <a
+            onClick={handleClickViewComplaints}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <UserCheck />
+            <span>Assign Rooms</span>
           </a>
         ) : (
           <></>
