@@ -14,7 +14,7 @@ const RenderDashboard = (role) => {
       return <DashboardCards />;
     case "Admin-manage-users":
       return <ManageUsersSection />;
-    case "Supervisor":
+    case "Supervisor-":
       return <SupervisorSection />;
     case "MaintenanceStaff":
       return <MaintenanceStaffSection />;
