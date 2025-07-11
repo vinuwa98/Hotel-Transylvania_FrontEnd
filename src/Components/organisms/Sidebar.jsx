@@ -3,7 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { themeColors } from "../../Theme/colors";
 import Button from "../atoms/Button";
 import logo from "../../assets/Hotel-Maintenance-System-Logo.png";
-import { LayoutDashboard, UserRoundPen, LogOut } from "lucide-react";
+import {
+  MessageCircleIcon,
+  LayoutDashboard,
+  UserRoundPen,
+  LogOut,
+  ClipboardListIcon,
+  BedDoubleIcon,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Sidebar = () => {
@@ -15,11 +22,23 @@ const Sidebar = () => {
   };
 
   const handleClickManageUser = () => {
-    navigate("/manage-user");
+    navigate("/dashboard/manage-user");
   };
 
   const handleLogout = () => {
     navigate("/");
+  };
+
+  const handleClickViewRooms = () => {
+    navigate("/dashboard/rooms");
+  };
+
+  const handleClickViewComplaints = () => {
+    navigate("/dashboard/complaints");
+  };
+
+  const handleClickViewJobs = () => {
+    navigate("/dashboard/jobs");
   };
 
   return (
@@ -60,6 +79,45 @@ const Sidebar = () => {
           >
             <UserRoundPen />
             <span>Manage Users</span>
+          </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "HelpDesk" ? (
+          <a
+            onClick={handleClickViewRooms}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <BedDoubleIcon />
+            <span>Rooms</span>
+          </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "HelpDesk" ? (
+          <a
+            onClick={handleClickViewComplaints}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <MessageCircleIcon />
+            <span>Complaints</span>
+          </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "HelpDesk" ? (
+          <a
+            onClick={handleClickViewJobs}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <ClipboardListIcon />
+            <span>Jobs</span>
           </a>
         ) : (
           <></>

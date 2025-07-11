@@ -26,12 +26,20 @@ function AppRoutes() {
           {/* Nested routes under MainLayout */}
           <Route path="dashboard" element={<DashboardPage />} />
           <Route
-            path="manage-user"
-            element={
-              <RequireRole allowedRoles={["Admin"]}>
-                <ManageUsersPage />
-              </RequireRole>
-            }
+            path="dashboard/rooms"
+            element={<DashboardPage sectionName={"rooms"} />}
+          />
+          <Route
+            path="dashboard/complaints"
+            element={<DashboardPage sectionName={"complaints"} />}
+          />
+          <Route
+            path="dashboard/jobs"
+            element={<DashboardPage sectionName={"jobs"} />}
+          />
+          <Route
+            path="dashboard/manage-user"
+            element={<DashboardPage sectionName={"manage-users"} />}
           />
         </Route>
       </Routes>
