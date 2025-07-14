@@ -3,7 +3,7 @@ import TableRow from "../../molecules/TableRow/TableRow";
 
 function Table({ columns, data }) {
   return (
-    <table className="min-w-full  text-center border-collapse text-12 rounded-md shadow-md">
+    <table className="min-w-full text-center border-collapse text-12 rounded-md shadow-md overflow-scroll">
       <thead>
         <tr>
           {columns.map((col, index) => (
