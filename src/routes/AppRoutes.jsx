@@ -41,6 +41,12 @@ function AppRoutes() {
             path="dashboard/manage-user"
             element={<DashboardPage sectionName={"manage-users"} />}
           />
+
+          <Route
+            path="dashboard/assign-cleaner"
+            element={<DashboardPage sectionName={"assign-cleaner"} />}
+          />
+
         </Route>
       </Routes>
     </Router>
