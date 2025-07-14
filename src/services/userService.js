@@ -139,11 +139,53 @@ const getLoggedUser = async (token) => {
   return response.data;
 };
 
-export { getLoggedUser };
- 
-export { activateUser };
-export { deactivateUser };
-export { fetchUsers };
-export { addUser };
-export { getUserById };
-export { updateUser };
+// Get complaints assigned to a specific supervisor
+const getComplaintsBySupervisor = async (supervisorId, token) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/Complaint/supervisor-complaints/${supervisorId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "*/*",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching complaints for supervisor:", error);
+    throw error;
+  }
+};
+
+export const deactivateComplaint = async (complaintId, token) => {
+  try {
+    const response = await axios.put(
+      `https://localhost:7172/api/Complaint/deactivate/${complaintId}`,
+      {}, // empty body for PUT
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deactivating complaint:", error);
+    throw error;
+  }
+};
+
+
+
+export {
+  addUser,
+  fetchUsers,
+  getUserById,
+  updateUser,
+  deactivateUser,
+  activateUser,
+  getLoggedUser,
+  getComplaintsBySupervisor,
+};

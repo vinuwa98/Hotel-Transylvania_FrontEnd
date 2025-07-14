@@ -1,9 +1,11 @@
 import TableHeaderCell from "../../atoms/TableHeaderCell/TableHeaderCell";
 import TableRow from "../../molecules/TableRow/TableRow";
+import axios from "axios";
 
-function Table({ columns, data }) {
+// Add default values for props
+function Table({ columns = [], data = [] }) {
   return (
-    <table className="min-w-full text-center border-collapse text-12 rounded-md shadow-md overflow-scroll">
+    <table className="min-w-full text-center border-collapse text-12 rounded-md shadow-md">
       <thead>
         <tr>
           {columns.map((col, index) => (

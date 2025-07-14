@@ -10,6 +10,7 @@ import {
   LogOut,
   ClipboardListIcon,
   BedDoubleIcon,
+  UserCheck,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -122,6 +123,18 @@ const Sidebar = () => {
         ) : (
           <></>
         )}
+
+        {auth.role === "Supervisor" ? (
+          <a
+            onClick={() => navigate("/dashboard/assign-cleaner")}
+            className="flex items-center gap-3 px-6 py-2 hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <UserCheck />
+            <span>Assign Cleaners</span>
+          </a>
+        ) : null}
+
       </nav>
 
       <div className="mt-auto mb-16">

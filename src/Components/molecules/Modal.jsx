@@ -64,7 +64,7 @@ const Modal = ({
           {messageType === "confirm" ? "Confirmation" : "Information"}
         </h2>
 
-        <p className="text-lg font-medium mb-8 leading-relaxed">{message}</p>
+        <div className="text-lg font-medium mb-8 leading-relaxed">{message}</div>
         <div className="flex justify-center mb-12 text-4xl">{icon}</div>
         <div className="flex justify-center gap-8">{renderButtons()}</div>
       </div>

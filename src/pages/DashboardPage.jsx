@@ -12,6 +12,7 @@ import { themeColors } from "../Theme/colors";
 import DropdownList from "../Components/atoms/DropdownList";
 import JobCreateForm from "../Components/molecules/JobCreateForm";
 import { createJob } from "../services/jobService";
+import AssignCleanerTable from "../Components/organisms/AssignCleanerTable"; // New Import
 
 const RenderDashboard = (role) => {
   const [showCreateJobModal, setShowJobCreateModal] = useState(false);
@@ -27,8 +28,10 @@ const RenderDashboard = (role) => {
       return <DashboardCards />;
     case "Admin-manage-users":
       return <ManageUsersSection />;
-    case "Supervisor":
+    case "Supervisor-":
       return <SupervisorSection />;
+    case "Supervisor-assign-cleaner": //New case
+      return <AssignCleanerTable />;
     case "MaintenanceStaff":
       return <MaintenanceStaffSection />;
     case "MaintenanceManager-":
@@ -79,6 +82,8 @@ const RenderDashboard = (role) => {
           />
         </>
       );
+    default:
+      return <div>Section not found</div>;
   }
 };
 
