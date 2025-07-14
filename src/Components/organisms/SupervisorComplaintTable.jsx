@@ -1,34 +1,31 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import Button from "../atoms/Button";
-import Table from "./Table/Table"; // Reusing the shared table component
+import Table from "./Table/Table";
+//Import your modal component
+import Modal from "../molecules/modal";
+import {
+  getComplaintsBySupervisor,
+  deactivateComplaint,
+} from "../../services/userService";
 
 const SupervisorComplaintTable = () => {
   const { activeUser } = useContext(AuthContext);
   const [complaints, setComplaints] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedComplaintId, setSelectedComplaintId] = useState(null);
 
-  // Fetch complaints created by the logged-in supervisor
+  // Fetch complaints
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        if (!activeUser || !activeUser.userId || !activeUser.token) {
-          console.warn("Active user or token not loaded yet");
-          console.log("Logged-in supervisor ID:", activeUser.userId);
-          return;
-        }
+        if (!activeUser?.userId || !activeUser?.token) return;
 
-        const response = await axios.get(
-          `https://localhost:7172/api/Complaint/supervisor-complaints/${activeUser.userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${activeUser.token}`,
-              Accept: "*/*",
-            },
-          }
+        const response = await getComplaintsBySupervisor(
+          activeUser.userId,
+          activeUser.token
         );
-
-        setComplaints(response.data);
+        setComplaints(response);
       } catch (error) {
         console.error("Failed to fetch complaints:", error);
       }
@@ -37,7 +34,34 @@ const SupervisorComplaintTable = () => {
     fetchComplaints();
   }, [activeUser]);
 
-  // Define columns for shared Table component
+  // Show modal for selected complaint
+  const openDeleteModal = (complaintId) => {
+    setSelectedComplaintId(complaintId);
+    setModalOpen(true);
+  };
+
+  // Confirm deletion
+  const handleConfirmDelete = async () => {
+    try {
+      await deactivateComplaint(selectedComplaintId, activeUser.token);
+      setComplaints((prev) =>
+        prev.filter((c) => c.complaintId !== selectedComplaintId)
+      );
+    } catch (error) {
+      console.error("Error deleting complaint:", error);
+      alert("Failed to delete complaint.");
+    } finally {
+      setModalOpen(false);
+      setSelectedComplaintId(null);
+    }
+  };
+
+  // Cancel delete
+  const handleCancelDelete = () => {
+    setModalOpen(false);
+    setSelectedComplaintId(null);
+  };
+
   const columns = [
     { header: "Room Number", accessor: "roomNumber" },
     { header: "Complaint Title", accessor: "title" },
@@ -50,14 +74,10 @@ const SupervisorComplaintTable = () => {
       renderCell: (complaint) => (
         <div className="flex justify-center gap-2">
           <Button
-            label="Assign"
-            className="text-white bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded"
-            onClick={() => console.log("Assign", complaint.id)}
-          />
-          <Button
             label="Delete"
             className="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded"
-            onClick={() => console.log("Delete", complaint.id)}
+            onClick={() => openDeleteModal(complaint.complaintId)}
+            
           />
         </div>
       ),
@@ -70,6 +90,14 @@ const SupervisorComplaintTable = () => {
       <div className="overflow-x-auto rounded shadow-lg">
         <Table columns={columns} data={complaints} />
       </div>
+
+      {/*Delete Confirmation Modal */}
+      <Modal
+        isOpen={modalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        message="Are you sure you want to delete this complaint?"
+      />
     </div>
   );
 };
