@@ -2,10 +2,14 @@ import TableHeaderCell from "../../atoms/TableHeaderCell/TableHeaderCell";
 import TableRow from "../../molecules/TableRow/TableRow";
 import axios from "axios";
 
-// Add default values for props
-function Table({ columns = [], data = [] }) {
+export default function Table({ columns = [], data = [] }) {
   return (
-    <table className="min-w-full text-center border-collapse text-12 rounded-md shadow-md">
+    <table className="min-w-full table-fixed text-center border-collapse text-12 rounded-md shadow-md">
+      <colgroup>
+        {columns.map((col, index) => (
+          <col key={index} style={{ width: col.width || "150px" }} />
+        ))}
+      </colgroup>
       <thead>
         <tr>
           {columns.map((col, index) => (
@@ -24,7 +28,7 @@ function Table({ columns = [], data = [] }) {
               colSpan={columns.length}
               className="px-6 py-4 text-center text-gray-500"
             >
-              No users found.
+              No data found.
             </td>
           </tr>
         )}
@@ -32,5 +36,3 @@ function Table({ columns = [], data = [] }) {
     </table>
   );
 }
-
-export default Table;

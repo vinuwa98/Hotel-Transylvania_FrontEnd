@@ -8,6 +8,7 @@ import {
   LayoutDashboard,
   UserRoundPen,
   LogOut,
+  Briefcase,
   ClipboardListIcon,
   BedDoubleIcon,
   UserCheck,
@@ -24,6 +25,10 @@ const Sidebar = () => {
 
   const handleClickManageUser = () => {
     navigate("/dashboard/manage-user");
+  };
+
+  const handleClickJobs = () => {
+    navigate("/dashboard/jobs");
   };
 
   const handleLogout = () => {
@@ -135,6 +140,18 @@ const Sidebar = () => {
           </a>
         ) : null}
 
+        {auth.role === "MaintenanceManager" ? (
+          <a
+            onClick={handleClickJobs}
+            className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <Briefcase />
+            <span>Jobs</span>
+          </a>
+        ) : (
+          <></>
+        )}
       </nav>
 
       <div className="mt-auto mb-16">
