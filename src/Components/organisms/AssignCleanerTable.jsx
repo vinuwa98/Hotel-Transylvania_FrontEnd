@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import Button from "../atoms/Button";
 import Table from "./Table/Table";
-import Modal from "../molecules/modal";
+import Modal from "../molecules/Modal";
 import axios from "axios";
 
 const AssignCleanerTable = () => {
@@ -37,11 +37,14 @@ const AssignCleanerTable = () => {
   // Load all cleaners
   const fetchCleaners = async () => {
     try {
-      const res = await axios.get(`https://localhost:7172/api/User/get-cleaners`, {
-        headers: {
-          Authorization: `Bearer ${activeUser.token}`,
-        },
-      });
+      const res = await axios.get(
+        `https://localhost:7172/api/User/get-cleaners`,
+        {
+          headers: {
+            Authorization: `Bearer ${activeUser.token}`,
+          },
+        }
+      );
       setCleaners(res.data);
     } catch (err) {
       console.error("Error loading cleaners:", err);
@@ -118,9 +121,9 @@ const AssignCleanerTable = () => {
               <option value="">-- Select Cleaner --</option>
               {cleaners.map((cleaner) => (
                 <option key={cleaner.id} value={cleaner.id}>
-                    {cleaner.fullName}
+                  {cleaner.fullName}
                 </option>
-                ))}
+              ))}
             </select>
           </div>
         }

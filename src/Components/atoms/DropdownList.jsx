@@ -18,9 +18,8 @@ function DropdownList(props) {
       onChange={onChange}
       required={required}
       disabled={disabled}
-      defaultValue={defaultValue}
-      className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-        disabled ? "bg-gray-100 text-gray-600 cursor-not-allowed" : ""
+      className={`w-full px-4 py-2 rounded-md border ${
+        disabled ? "bg-gray-200 cursor-not-allowed text-gray-600" : ""
       }`}
     >
       {options.map((opt, index) => (

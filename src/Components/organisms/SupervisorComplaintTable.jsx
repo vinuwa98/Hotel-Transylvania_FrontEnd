@@ -3,7 +3,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import Button from "../atoms/Button";
 import Table from "./Table/Table";
 //Import your modal component
-import Modal from "../molecules/modal";
+import Modal from "../molecules/Modal";
 import {
   getComplaintsBySupervisor,
   deactivateComplaint,
@@ -77,7 +77,6 @@ const SupervisorComplaintTable = () => {
             label="Delete"
             className="text-white bg-red-500 hover:bg-red-600 px-3 py-1 rounded"
             onClick={() => openDeleteModal(complaint.complaintId)}
-            
           />
         </div>
       ),
