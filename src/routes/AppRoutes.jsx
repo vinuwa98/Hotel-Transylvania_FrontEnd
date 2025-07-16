@@ -47,6 +47,11 @@ function AppRoutes() {
             element={<DashboardPage sectionName={"assign-cleaner"} />}
           />
 
+          <Route
+            path="dashboard/assign-room"
+            element={<DashboardPage sectionName={"assign-room"} />}
+          />
+
         </Route>
       </Routes>
     </Router>

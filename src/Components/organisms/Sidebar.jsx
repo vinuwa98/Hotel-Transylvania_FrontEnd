@@ -135,6 +135,17 @@ const Sidebar = () => {
           </a>
         ) : null}
 
+        {auth.role === "Supervisor" ? (
+          <a
+            onClick={() => navigate("/dashboard/assign-room")}
+            className="flex items-center gap-3 px-6 py-2 hover:bg-blue-400 rounded-md"
+            style={{ color: themeColors.White }}
+          >
+            <UserCheck />
+            <span>Assign Rooms</span>
+          </a>
+        ) : null}
+
       </nav>
 
       <div className="mt-auto mb-16">

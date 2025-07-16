@@ -8,6 +8,7 @@ import HelpDeskSection from "../Components/organisms/HelpDeskSection";
 import RoomsSection from "../Components/organisms/RoomsSection";
 import ManageUsersSection from "../Components/organisms/ManageUsersSection";
 import AssignCleanerTable from "../Components/organisms/AssignCleanerTable"; // New Import
+import AssignRoomTable from "../Components/organisms/AssignRoomTable"; 
 
 const RenderDashboard = (role) => {
   switch (role) {
@@ -17,7 +18,7 @@ const RenderDashboard = (role) => {
       return <ManageUsersSection />;
     case "Supervisor-":
       return <SupervisorSection />;
-    case "Supervisor-assign-cleaner": //New case
+    case "Supervisor-assign-cleaner": 
       return <AssignCleanerTable />;
     case "MaintenanceStaff":
       return <MaintenanceStaffSection />;
@@ -27,6 +28,8 @@ const RenderDashboard = (role) => {
       return <HelpDeskSection />;
     case "HelpDesk-rooms":
       return <RoomsSection />;
+    case "Supervisor-assign-room":  
+      return <AssignRoomTable />;
     default:
       return <div>Section not found</div>;
   }
