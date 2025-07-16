@@ -29,6 +29,18 @@ export const getRoomDashboardData = async () => {
   return response.data;
 };
 
+export const getRoomStatusTypes = async () => {
+  const token = localStorage.getItem("token");
+  const response = await axios.get(`${API_BASE_URL}/Room/room-status-types`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.data;
+};
+
 export const getAllRoomData = async () => {
   const token = localStorage.getItem("token");
   const response = await axios.get(`${API_BASE_URL}/Room/all-rooms`, {

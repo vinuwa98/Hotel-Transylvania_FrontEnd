@@ -7,8 +7,10 @@ import Input from "../atoms/Input";
 import DropdownList from "../atoms/DropdownList";
 import { useFormik } from "formik";
 
-const JobCreateForm = ({ open, onClose, handleSubmit }) => {
+const JobCreateForm = ({ complaintData, open, onClose, handleSubmit }) => {
   const [loading, setLoading] = useState(false);
+
+  console.log("complaint", complaintData);
 
   const formik = useFormik({
     initialValues: {
@@ -73,7 +75,7 @@ const JobCreateForm = ({ open, onClose, handleSubmit }) => {
           type="text"
           name="jobTitle"
           placeholder="Enter job title"
-          value={formik.values.jobTitle}
+          value={complaintData.title}
           onChange={formik.handleChange}
           required
         />
@@ -83,10 +85,20 @@ const JobCreateForm = ({ open, onClose, handleSubmit }) => {
           type="text"
           name="complaintId"
           placeholder="Enter complaint ID"
-          value={formik.values.complaintId}
+          value={complaintData.complaintNumber}
           onChange={formik.handleChange}
           isDisabled={true}
           required
+        />
+
+        <FieldTitle>Complaint Description</FieldTitle>
+        <Input
+          type="text"
+          name="complaintDescription"
+          placeholder="Complaint Description"
+          value={complaintData.description}
+          onChange={formik.handleChange}
+          isDisabled={true}
         />
 
         <FieldTitle>Job Description</FieldTitle>

@@ -1,6 +1,5 @@
 import TableHeaderCell from "../../atoms/TableHeaderCell/TableHeaderCell";
 import TableRow from "../../molecules/TableRow/TableRow";
-import axios from "axios";
 
 // Add default values for props
 function Table({ columns = [], data = [] }) {
@@ -16,7 +15,9 @@ function Table({ columns = [], data = [] }) {
       <tbody>
         {data.length > 0 ? (
           data.map((row, index) => (
-            <TableRow key={index} rowData={row} columns={columns} />
+            <>
+              <TableRow key={index} rowData={row} columns={columns} />{" "}
+            </>
           ))
         ) : (
           <tr>
@@ -24,7 +25,7 @@ function Table({ columns = [], data = [] }) {
               colSpan={columns.length}
               className="px-6 py-4 text-center text-gray-500"
             >
-              No users found.
+              No data
             </td>
           </tr>
         )}

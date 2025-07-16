@@ -1,13 +1,17 @@
 import Table from "./Table/Table";
 import DropdownList from "../../Components/atoms/DropdownList";
-import { getAllRoomData, updateRoomStatus } from "../../services/roomService";
+import {
+  getAllRoomData,
+  getRoomStatusTypes,
+  updateRoomStatus,
+} from "../../services/roomService";
 import { useEffect, useState } from "react";
 
 function RoomsSection() {
   const [roomData, setRoomData] = useState([]);
+  const [roomStatusTypes, setRoomStatusTypes] = useState([]);
 
   const handleUpdateRoomStatus = async (event, roomNumber) => {
-    console.log(`Room(${roomNumber}) status changed:`, event.target.value);
     const newStatus = event.target.value;
     const updatedRooms = await updateRoomStatus(roomNumber, newStatus);
 
@@ -17,6 +21,16 @@ function RoomsSection() {
   useEffect(() => {
     getAllRoomData().then((roomData) => {
       setRoomData(roomData);
+    });
+
+    getRoomStatusTypes().then((statusTypes) => {
+      setRoomStatusTypes(
+        statusTypes.map((statusType) => ({
+          label: statusType,
+          value: statusType,
+          disabled: statusType === "Maintenance",
+        }))
+      );
     });
   }, []);
 
@@ -40,21 +54,7 @@ function RoomsSection() {
                       onChange={(e) =>
                         handleUpdateRoomStatus(e, room.roomNumber)
                       }
-                      options={[
-                        {
-                          label: "Available",
-                          value: "Available",
-                        },
-                        {
-                          label: "Unavailable",
-                          value: "Unavailable",
-                        },
-                        {
-                          label: "Under Maintenance",
-                          value: "Maintenance",
-                          disabled: true,
-                        },
-                      ]}
+                      options={roomStatusTypes}
                       disabled={room.roomStatus === "Maintenance"}
                     />
                   );
