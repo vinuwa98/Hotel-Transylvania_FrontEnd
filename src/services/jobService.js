@@ -234,6 +234,7 @@ export const handleViewJobHelper = async (
   }
 };
 
+/*
 export const handleStatusChangeHelper = async (jobId, newStatus, loadJobs) => {
   try {
     const token = localStorage.getItem("token");
@@ -242,7 +243,7 @@ export const handleStatusChangeHelper = async (jobId, newStatus, loadJobs) => {
   } catch (error) {
     console.error("Failed to update status:", error);
   }
-};
+};*/
 
 export const handleUserAssignmentSubmit = async (
   selectedJob,
@@ -270,4 +271,48 @@ export const fetchDashboardSummary = async (token) => {
     },
   });
   return response.data;
+};
+
+export async function updateRoomStatus(token, jobId, jobStatus) {
+  try {
+    const response = await axios.put(
+      `${BASE_URL}/Room/update-status/${jobId}`,
+      { jobStatus }, // ✅ Send jobStatus in request body
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data; // Returns RoomStatusDto
+  } catch (error) {
+    console.error("❌ Failed to update room status:", error);
+    throw error;
+  }
+}
+export const handleStatusChangeHelper = async (
+  jobId,
+  newStatus,
+  reloadJobs
+) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    // Step 1: Update the job status
+    await updateJobStatus(token, jobId, newStatus);
+
+    // Step 2: Update room status if applicable
+    const shouldUpdateRoom =
+      newStatus === "Pending" || newStatus === "Completed";
+
+    if (shouldUpdateRoom) {
+      await updateRoomStatus(token, jobId, newStatus);
+    }
+
+    // Step 3: Refresh the job list
+    await reloadJobs();
+  } catch (error) {
+    console.error("❌ Error updating job/room status:", error);
+  }
 };

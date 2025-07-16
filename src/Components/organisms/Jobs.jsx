@@ -12,6 +12,7 @@ import {
   handleViewJobHelper,
   handleStatusChangeHelper,
   handleUserAssignmentSubmit,
+  updateRoomStatus,
 } from "../../services/jobService";
 
 const jobStatusOptions = [
@@ -29,6 +30,8 @@ function Jobs() {
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [selectedUserIds, setSelectedUserIds] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [editableStatusRows, setEditableStatusRows] = useState({});
+  const [statusDrafts, setStatusDrafts] = useState({});
 
   const toggleUser = (userId) => {
     setSelectedUserIds((prevIds) =>
@@ -38,14 +41,33 @@ function Jobs() {
     );
   };
 
+  const toggleEditStatus = (jobId, currentStatus) => {
+    setEditableStatusRows((prev) => ({ ...prev, [jobId]: true }));
+    setStatusDrafts((prev) => ({ ...prev, [jobId]: currentStatus }));
+  };
+
+  const cancelStatusEdit = (jobId) => {
+    setEditableStatusRows((prev) => ({ ...prev, [jobId]: false }));
+    setStatusDrafts((prev) => {
+      const copy = { ...prev };
+      delete copy[jobId];
+      return copy;
+    });
+  };
+
+  const saveStatusChange = async (jobId) => {
+    const newStatus = statusDrafts[jobId];
+    const originalJob = jobsData.find((j) => j.id === jobId);
+    if (newStatus !== originalJob.status) {
+      await handleStatusChangeHelper(jobId, newStatus, loadJobs);
+    }
+    cancelStatusEdit(jobId);
+  };
+
   const loadJobs = () => loadJobsHelper(setJobs);
   const loadUsers = () => loadUsersHelper(setAllUsers);
-
   const handleViewJob = (jobId) =>
     handleViewJobHelper(jobId, setSelectedJob, setShowJobModal);
-
-  const handleStatusChange = (jobId, status) =>
-    handleStatusChangeHelper(jobId, status, loadJobs);
 
   const handleAssignJob = async (jobId) => {
     const job = jobsData.find((j) => j.id === jobId);
@@ -122,16 +144,57 @@ function Jobs() {
     },
     {
       header: "Update Status",
-      renderCell: (job) => (
-        <DropdownList
-          name={`status-${job.id}`}
-          value={job.status}
-          onChange={(e) => handleStatusChange(job.id, e.target.value)}
-          options={jobStatusOptions}
-          disabled={job.status === "Completed"} // Disable dropdown if status is "Completed"
-        />
-      ),
-      width: "180px",
+      renderCell: (job) => {
+        const isEditing = editableStatusRows[job.id];
+        const draftStatus = statusDrafts[job.id] ?? job.status;
+
+        return (
+          <div className="flex items-center space-x-2">
+            <DropdownList
+              name={`status-${job.id}`}
+              value={draftStatus}
+              onChange={(e) =>
+                setStatusDrafts((prev) => ({
+                  ...prev,
+                  [job.id]: e.target.value,
+                }))
+              }
+              options={jobStatusOptions}
+              disabled={!isEditing}
+            />
+            {!isEditing ? (
+              <Button
+                label="Edit"
+                onClick={() => toggleEditStatus(job.id, job.status)}
+                style={{
+                  backgroundColor: themeColors.Blue,
+                  color: themeColors.White,
+                }}
+              />
+            ) : (
+              <>
+                <Button
+                  label="Save"
+                  onClick={() => saveStatusChange(job.id)}
+                  style={{
+                    backgroundColor: themeColors.Green,
+                    color: themeColors.White,
+                  }}
+                />
+                <Button
+                  label="Cancel"
+                  onClick={() => cancelStatusEdit(job.id)}
+                  style={{
+                    backgroundColor: themeColors.Red,
+                    color: themeColors.White,
+                  }}
+                />
+              </>
+            )}
+          </div>
+        );
+      },
+      width: "300px",
     },
   ];
 
