@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { themeColors } from "../../Theme/colors";
 import Button from "../atoms/Button";
 import logo from "../../assets/Hotel-Maintenance-System-Logo.png";
-import { LayoutDashboard, UserRoundPen, LogOut } from "lucide-react";
+import { LayoutDashboard, SquareChartGantt ,UserRoundPen, LogOut } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Sidebar = () => {
@@ -18,13 +18,17 @@ const Sidebar = () => {
     navigate("/manage-user");
   };
 
+  const handleClickComplaint = () => {
+    navigate("/add-complaint");
+  };
+
   const handleLogout = () => {
     navigate("/");
   };
 
   return (
     <aside
-      className="w-64 shadow-md h-full hidden md:flex flex-col"
+      className="w-64  shadow-md h-full hidden md:flex flex-col"
       style={{ backgroundColor: themeColors.DarkBlue }}
     >
       <div className="flex flex-col items-center justify-center py-2 mt-2">
@@ -61,6 +65,20 @@ const Sidebar = () => {
             <UserRoundPen />
             <span>Manage Users</span>
           </a>
+        ) : (
+          <></>
+        )}
+
+        {auth.role === "Cleaner" ? (
+            <a 
+              onClick={handleClickComplaint}
+              className="flex items-center gap-3 px-6 py-2  hover:bg-blue-400 rounded-md"
+              style={{ color: themeColors.White }}
+            >
+                <SquareChartGantt  />
+                <span>View My Complaints</span>
+            </a>
+  
         ) : (
           <></>
         )}

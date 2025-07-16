@@ -9,6 +9,7 @@ import ResetPassword from "../pages/ResetPasswordPage";
 import MainLayout from "../Components/Template/MainLayout";
 import RequireRole from "../Components/organisms/RequireRole";
 import Unauthorized from "../pages/UnauthorizedPage";
+import AddComplaintForm from "../Components/molecules/AddComplaintForm";
 
 /**
  * AppRoutes handles routing for the app.
@@ -30,6 +31,14 @@ function AppRoutes() {
             element={
               <RequireRole allowedRoles={["Admin"]}>
                 <ManageUsersPage />
+              </RequireRole>
+            }
+          />
+          <Route
+            path="add-complaint"
+            element={
+              <RequireRole allowedRoles={["Cleaner", "Supervisor"]}>
+                <AddComplaintForm />
               </RequireRole>
             }
           />
