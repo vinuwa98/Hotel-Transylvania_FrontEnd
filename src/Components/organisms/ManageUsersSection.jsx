@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from "react";
-import Button from "../Components/atoms/Button";
-import UserCreateForm from "../Components/molecules/UserCreateForm"; // MODIFICATION: Corrected import name from UserFormModal to UserCreateForm
-import UserEditForm from "../Components/organisms/UserEditForm"; // MODIFICATION: Import UserEditForm
-import { themeColors } from "../Theme/colors";
-import Modal from "../Components/molecules/modal";
-import Table from "../Components/organisms/Table/Table";
+import Sidebar from "../organisms/Sidebar";
+import Header from "../molecules/Header";
+import Button from "../atoms/Button";
+import UserCreateForm from "../molecules/UserCreateForm";
+import UserEditForm from "../organisms/UserEditForm";
+import { themeColors } from "../../Theme/colors";
+import Modal from "../molecules/Modal";
+import Table from "../organisms/Table/Table";
 import {
   fetchUsers,
   deactivateUser,
   activateUser,
   addUser,
-} from "../services/userService";
-import UserFormModal from "../Components/molecules/UserCreateForm";
+} from "../../services/userService";
+import UserFormModal from "../molecules/UserCreateForm";
 import { Ban, ShieldCheck, XCircle, CheckCircle } from "lucide-react";
 
 const ManageUsersPage = () => {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [addUserModalOpen, setAddUserModalOpen] = useState(false);
-  const [confirmAction, setConfirmAction] = useState(null); // MODIFICATION: Changed to use state for confirmAction
-  const [confirmMessage, setConfirmMessage] = useState(""); // Optional but also needed
-  const [confirmIcon, setConfirmIcon] = useState(null); // Optional for icon
-  const [editUserModalOpen, setEditUserModalOpen] = useState(false); // ADDITION: New state for edit modal
-  const [currentEditingUserId, setCurrentEditingUserId] = useState(null); // ADDITION: New state to store ID of user being edited
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+  const [confirmIcon, setConfirmIcon] = useState(null);
+  const [editUserModalOpen, setEditUserModalOpen] = useState(false);
+  const [currentEditingUserId, setCurrentEditingUserId] = useState(null);
   const [users, setUsers] = useState([]);
   const [confirmMessageType, setConfirmMessageType] = useState("confirm");
 
@@ -99,7 +101,8 @@ const ManageUsersPage = () => {
   // Add a new user with feedback
   const handleAddUserSubmit = async (data) => {
     try {
-      const response = await addUser(data.form, data.token);
+      await addUser(data.form, data.token);
+
       setConfirmMessage("User added successfully!");
       setConfirmIcon(
         <div
@@ -113,10 +116,16 @@ const ManageUsersPage = () => {
         </div>
       );
       setConfirmMessageType("information");
-      setUsers(response.data);
+      setConfirmAction(null); //
       setAddUserModalOpen(false);
+      setConfirmModalOpen(true);
+
+      setTimeout(() => {
+        setConfirmModalOpen(false);
+      }, 3000);
+
+      loadUsers(); //
     } catch (error) {
-      setConfirmMessageType("confirm");
       setConfirmMessage(`User not added: ${error.message}`);
       setConfirmIcon(
         <div
@@ -126,47 +135,41 @@ const ManageUsersPage = () => {
           <XCircle className="w-8 h-8" style={{ color: themeColors.White }} />
         </div>
       );
-    } finally {
+      setConfirmMessageType("information");
+      setConfirmAction(null);
       setConfirmModalOpen(true);
     }
   };
 
-  // Handle opening the Add User modal
   const handleAddUserClick = () => {
     setAddUserModalOpen(true);
   };
 
-  // Handle closing the Add User modal
   const handleCloseAddUserModal = () => {
     setAddUserModalOpen(false);
-    loadUsers(); // Refresh user list after adding
+    loadUsers();
   };
 
-  // ADDITION: Handle opening the Edit User modal
   const handleEditClick = (userId) => {
     setCurrentEditingUserId(userId);
     setEditUserModalOpen(true);
   };
 
-  // ADDITION: Handle closing the Edit User modal
   const handleCloseEditUserModal = () => {
     setEditUserModalOpen(false);
-    setCurrentEditingUserId(null); // Clear the editing user ID
-    loadUsers(); // Refresh user list after editing
+    setCurrentEditingUserId(null);
+    loadUsers();
   };
 
-  // Deactivate the users
   const handleDeactivate = async (userId, currentStatus) => {
     const isDeactivating = currentStatus === "Active";
 
-    // Set the confirm message based on the action
     setConfirmMessage(
       isDeactivating
         ? "Are you sure you want to deactivate this user?"
         : "Are you sure you want to activate this user?"
     );
 
-    // Set the confirm icon based on the action
     setConfirmIcon(
       isDeactivating ? (
         <div
@@ -192,7 +195,6 @@ const ManageUsersPage = () => {
       )
     );
 
-    // Set the confirm action based on the action
     setConfirmAction(() => async () => {
       try {
         const token = localStorage.getItem("token");
@@ -212,7 +214,6 @@ const ManageUsersPage = () => {
       }
     });
 
-    // Open the confirmation modal
     setConfirmModalOpen(true);
   };
 
@@ -234,7 +235,7 @@ const ManageUsersPage = () => {
             className="w-fit px-4 py-2 rounded-md mb-4 hover:opacity-90 transition"
           />
 
-          <div className="overflow-x-auto shadow-lg rounded-lg">
+          <div className="w-full overflow-x-auto shadow-lg rounded-lg">
             <Table columns={columns} data={users} />
           </div>
         </div>
@@ -254,7 +255,7 @@ const ManageUsersPage = () => {
       {/* <UserCreateForm
         open={addUserModalOpen}
         onClose={handleCloseAddUserModal}
-        handleSubmit={handleAddUserSubmit} // MODIFICATION: Pass the new handleAddUserSubmit
+        handleSubmit={handleAddUserSubmit} 
       /> */}
       <UserFormModal
         open={addUserModalOpen}
@@ -266,8 +267,8 @@ const ManageUsersPage = () => {
       <UserEditForm
         open={editUserModalOpen}
         onClose={handleCloseEditUserModal}
-        userId={currentEditingUserId} // Pass the ID of the user to edit
-        onUserUpdated={loadUsers} // Call loadUsers to refresh table after update
+        userId={currentEditingUserId}
+        onUserUpdated={loadUsers}
       />
     </div>
   );

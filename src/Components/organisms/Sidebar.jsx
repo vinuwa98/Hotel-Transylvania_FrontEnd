@@ -4,6 +4,16 @@ import { themeColors } from "../../Theme/colors";
 import Button from "../atoms/Button";
 import logo from "../../assets/Hotel-Maintenance-System-Logo.png";
 import { LayoutDashboard, SquareChartGantt ,UserRoundPen, LogOut } from "lucide-react";
+import {
+  MessageCircleIcon,
+  LayoutDashboard,
+  UserRoundPen,
+  LogOut,
+  Briefcase,
+  ClipboardListIcon,
+  BedDoubleIcon,
+  UserCheck,
+} from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
 const Sidebar = () => {
@@ -24,6 +34,18 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     navigate("/");
+  };
+
+  const handleClickViewRooms = () => {
+    navigate("/dashboard/rooms");
+  };
+
+  const handleClickViewComplaints = () => {
+    navigate("/dashboard/complaints");
+  };
+
+  const handleClickViewJobs = () => {
+    navigate("/dashboard/jobs");
   };
 
   return (

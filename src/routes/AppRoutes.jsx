@@ -7,32 +7,45 @@ import DashboardPage from "../pages/DashboardPage";
 import ManageUsersPage from "../pages/ManageUsersPage";
 import ResetPassword from "../pages/ResetPasswordPage";
 import MainLayout from "../Components/Template/MainLayout";
-import RequireRole from "../Components/organisms/RequireRole";
 import Unauthorized from "../pages/UnauthorizedPage";
 import AddComplaintForm from "../Components/molecules/AddComplaintForm";
 
-/**
- * AppRoutes handles routing for the app.
- */
 function AppRoutes() {
   return (
     <Router>
       <Routes>
-        {/* Login Page Route */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
-        {/* Dashboard Route (shows after successful login) */}
+
         <Route element={<MainLayout />}>
-          {/* Nested routes under MainLayout */}
+          {/* 👇 Default dashboard */}
           <Route path="dashboard" element={<DashboardPage />} />
+
+          {/* 👇 Routes with sectionName */}
           <Route
-            path="manage-user"
-            element={
-              <RequireRole allowedRoles={["Admin"]}>
-                <ManageUsersPage />
-              </RequireRole>
-            }
+            path="dashboard/rooms"
+            element={<DashboardPage sectionName="rooms" />}
+          />
+          <Route
+            path="dashboard/complaints"
+            element={<DashboardPage sectionName="complaints" />}
+          />
+          <Route
+            path="dashboard/jobs"
+            element={<DashboardPage sectionName="jobs" />}
+          />
+          <Route
+            path="dashboard/manage-user"
+            element={<DashboardPage sectionName="manage-users" />}
+          />
+          <Route
+            path="dashboard/assign-cleaner"
+            element={<DashboardPage sectionName="assign-cleaner" />}
+          />
+          <Route
+            path="dashboard/help-desk"
+            element={<DashboardPage sectionName="help-desk" />}
           />
           <Route
             path="add-complaint"
@@ -49,3 +62,32 @@ function AppRoutes() {
 }
 
 export default AppRoutes;
+
+/*
+    {/* <Router>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+
+        <Route path="dashboard" element={<MainLayout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="rooms" element={<DashboardPage sectionName="rooms" />} />
+          <Route
+            path="complaints"
+            element={<DashboardPage sectionName="complaints" />}
+          />
+          <Route path="jobs" element={<DashboardPage sectionName="jobs" />} />
+          <Route
+            path="manage-user"
+            element={<DashboardPage sectionName="manage-users" />}
+          />
+          <Route
+            path="assign-cleaner"
+            element={<DashboardPage sectionName="assign-cleaner" />}
+          />
+
+          <Route path="jobs"  element={<DashboardPage sectionName="jobs" />
+        </Route>
+      </Routes>
+    </Router> */
