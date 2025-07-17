@@ -10,25 +10,25 @@ import { useFormik } from "formik";
 const JobCreateForm = ({ complaintData, open, onClose, handleSubmit }) => {
   const [loading, setLoading] = useState(false);
 
-  console.log("complaint", complaintData);
-
   const formik = useFormik({
     initialValues: {
-      jobTitle: "",
-      complaintId: "",
+      jobTitle: complaintData.title,
+      complaintId: complaintData.complaintNumber,
       jobDescription: "",
       jobPriority: "low",
     },
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       setLoading(true);
-      try {
-        await handleSubmit({
-          form: values,
-          token: localStorage.getItem("token"),
-        });
-      } finally {
+      handleSubmit({
+        form: {
+          complaintNumber: values.complaintId,
+          description: values.jobDescription,
+          priority: values.jobPriority,
+        },
+        token: localStorage.getItem("token"),
+      }).then(() => {
         setLoading(false);
-      }
+      });
     },
   });
 
@@ -75,7 +75,7 @@ const JobCreateForm = ({ complaintData, open, onClose, handleSubmit }) => {
           type="text"
           name="jobTitle"
           placeholder="Enter job title"
-          value={complaintData.title}
+          value={formik.values.jobTitle}
           onChange={formik.handleChange}
           required
         />
@@ -85,7 +85,7 @@ const JobCreateForm = ({ complaintData, open, onClose, handleSubmit }) => {
           type="text"
           name="complaintId"
           placeholder="Enter complaint ID"
-          value={complaintData.complaintNumber}
+          value={formik.values.complaintId}
           onChange={formik.handleChange}
           isDisabled={true}
           required

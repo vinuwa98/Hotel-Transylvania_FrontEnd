@@ -46,7 +46,6 @@ function RoomsSection() {
               {
                 header: "Status",
                 renderCell: (room) => {
-                  console.log(room);
                   return (
                     <DropdownList
                       name={`status-${room.roomNumber}`}

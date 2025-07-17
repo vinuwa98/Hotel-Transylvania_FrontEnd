@@ -9,14 +9,11 @@ import { getAllComplaints } from "../../services/complaintService";
 function ComplaintsSection() {
   const [showCreateJobModal, setShowJobCreateModal] = useState(false);
   const [complaints, setComplaints] = useState([]);
-  const [currentJobData, setCurrentJobData] = useState(null);
+  const [currentComplaintData, setCurrentComplaintData] = useState(null);
 
-  const handleCreateJob = (jobData, token) => {
+  const handleCreateJob = (complaintData) => {
+    setCurrentComplaintData(complaintData);
     setShowJobCreateModal(true);
-    setCurrentJobData(jobData);
-    createJob(jobData, token).then(() => {
-      setShowJobCreateModal(false);
-    });
   };
 
   const columns = [
@@ -37,9 +34,7 @@ function ComplaintsSection() {
               backgroundColor: themeColors.Green,
               color: themeColors.White,
             }}
-            onClick={() =>
-              handleCreateJob(complaint, localStorage.getItem("token"))
-            }
+            onClick={() => handleCreateJob(complaint)}
           />
         </div>
       ),
@@ -49,11 +44,10 @@ function ComplaintsSection() {
   useEffect(() => {
     getAllComplaints()
       .then((complaints) => {
-        console.log(complaints);
         setComplaints(complaints);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -61,12 +55,16 @@ function ComplaintsSection() {
     <div>
       <h2 className="text-4xl font-bold mb-4">Manage Complaints</h2>
       <div className="overflow-x-auto shadow-lg rounded-lg">
-        {currentJobData && (
+        {currentComplaintData && (
           <JobCreateForm
-            complaintData={currentJobData}
+            complaintData={currentComplaintData}
             open={showCreateJobModal}
             onClose={() => setShowJobCreateModal(false)}
-            handleSubmit={handleCreateJob}
+            handleSubmit={async (submitData) => {
+              await createJob(submitData.form, submitData.token).then(() => {
+                setShowJobCreateModal(false);
+              });
+            }}
           />
         )}
 

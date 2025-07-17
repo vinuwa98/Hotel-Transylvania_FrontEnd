@@ -6,22 +6,22 @@ export default function Table({ columns = [], data = [] }) {
     <table className="min-w-full table-fixed text-center border-collapse text-12 rounded-md shadow-md">
       <colgroup>
         {columns.map((col, index) => (
-          <col key={index} style={{ width: col.width || "150px" }} />
+          <col key={"col_" + index} style={{ width: col.width || "150px" }} />
         ))}
       </colgroup>
       <thead>
         <tr>
           {columns.map((col, index) => (
-            <TableHeaderCell key={index}>{col.header}</TableHeaderCell>
+            <TableHeaderCell key={"header_" + index}>
+              {col.header}
+            </TableHeaderCell>
           ))}
         </tr>
       </thead>
       <tbody>
         {data.length > 0 ? (
           data.map((row, index) => (
-            <>
-              <TableRow key={index} rowData={row} columns={columns} />{" "}
-            </>
+            <TableRow key={"row_" + index} rowData={row} columns={columns} />
           ))
         ) : (
           <tr>

@@ -30,7 +30,9 @@ const RenderDashboard = (role, sectionName) => {
       return <MaintenanceStaffSection />;
     case "MaintenanceManager":
       return <MaintenanceManagerSection />;
-    case "HelpDesk-":
+    case "MaintenanceManager-jobs":
+      return <Jobs />;
+    case "HelpDesk":
       return <HelpDeskSection />;
     case "HelpDesk-complaints":
       return <ComplaintsSection />;

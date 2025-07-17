@@ -7,7 +7,7 @@ export const createJob = async (jobData, token) => {
     .post(`${BASE_URL}/Job/create-job`, jobData, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => console.log(res))
+    .then((res) => res)
     .catch((err) => {
       throw Error(err);
     });
@@ -20,7 +20,7 @@ export const deleteJob = async (jobData, token) => {
     .post(`${BASE_URL}/Job/delete-job`, jobData, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => console.log(res))
+    .then((res) => res)
     .catch((err) => {
       throw Error(err);
     });
